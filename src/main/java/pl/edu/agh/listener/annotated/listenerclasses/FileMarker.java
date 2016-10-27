@@ -1,7 +1,6 @@
 package pl.edu.agh.listener.annotated.listenerclasses;
 
 import org.testng.IInvokedMethod;
-import org.testng.IInvokedMethodListener;
 import org.testng.ITestResult;
 import pl.edu.agh.listener.exceptions.TokenCouldNotBeParsedException;
 import pl.edu.agh.listener.globals.PriorityAwareListener;
@@ -20,7 +19,7 @@ import static pl.edu.agh.listener.util.FileMarkerHelper.preparePath;
  */
 public class FileMarker extends PriorityAwareListener {
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(Collector.class);
-    public static List<Path> registeredTests;
+    public static List<Path> registeredTests = new ArrayList<>();
 
     public FileMarker() {
         this.priority = 100;
@@ -33,16 +32,16 @@ public class FileMarker extends PriorityAwareListener {
 
     @Override
     public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
-        // TODO if and only if test passed
-        try {
-            Path testCasePath = preparePath(iInvokedMethod.getTestMethod());
-            if("".equals(getToken(testCasePath))) {
-                if(registeredTests == null) registeredTests = new ArrayList<>();
-                registeredTests.add(testCasePath);
-                FileMarkerHelper.markTestClass(testCasePath);
+        if (iTestResult.isSuccess()) {
+            try {
+                Path testCasePath = preparePath(iInvokedMethod.getTestMethod());
+                if ("".equals(getToken(testCasePath))) {
+                    registeredTests.add(testCasePath);
+                    FileMarkerHelper.markTestClass(testCasePath);
+                }
+            } catch (TokenCouldNotBeParsedException | IOException ignored) {
+                // carry on
             }
-        } catch (TokenCouldNotBeParsedException | IOException e) {
-            // consume
         }
     }
 }

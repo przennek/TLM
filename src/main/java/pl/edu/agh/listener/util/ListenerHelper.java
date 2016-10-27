@@ -18,4 +18,8 @@ public class ListenerHelper {
         return method.getConstructorOrMethod().getMethod().isAnnotationPresent(annotation)
                 || method.getInstance().getClass().isAnnotationPresent(annotation);
     }
+
+    public static String getTestClassName(IInvokedMethod method) {
+        return method.getTestMethod().getTestClass().getRealClass().toString().split(" ")[1];
+    }
 }
