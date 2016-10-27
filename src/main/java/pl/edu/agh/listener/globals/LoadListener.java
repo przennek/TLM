@@ -23,7 +23,7 @@ public class LoadListener extends GlobalListener {
     private static final String ANN_LISTENERS_DIR = "src/main/java/pl/edu/agh/listener/annotated/listenerclasses";
 
     private List<GlobalListener> globalListeners;
-    private List<IInvokedMethodListener> annListeners;
+    private List<PriorityAwareListener> annListeners;
 
     @Override
     public void before(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
@@ -58,6 +58,7 @@ public class LoadListener extends GlobalListener {
 
     private void executeListeners(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         annListeners = loadListeners(ANN_LISTENERS_DIR);
+        Collections.sort(annListeners);
         annListeners.forEach(listener -> {
             listener.beforeInvocation(iInvokedMethod, iTestResult);
             log.info(String.format("%s <> loaded %s", this.toString(), listener.toString()));

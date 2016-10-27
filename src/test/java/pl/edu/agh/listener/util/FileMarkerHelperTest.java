@@ -16,7 +16,7 @@ import static pl.edu.agh.listener.annotated.annotations.TestTypes.UnitTest;
  * Created by Przemek on 24.10.2016.
  */
 @TestType(UnitTest)
-public class FileMarkerTest {
+public class FileMarkerHelperTest {
     private static final String TOKEN_RESULT = "testing";
 
     @Test
@@ -25,7 +25,7 @@ public class FileMarkerTest {
         String result;
 
         // when
-        result = FileMarker.uniqueToken(() -> TOKEN_RESULT, String -> true);
+        result = FileMarkerHelper.uniqueToken(() -> TOKEN_RESULT, String -> true);
 
         // then
         assertEquals(result, TOKEN_RESULT);
@@ -34,7 +34,7 @@ public class FileMarkerTest {
     @Test(expectedExceptions = RuntimeException.class)
     public void shouldNotGenerateToken() {
         // should throw runtime exception
-        FileMarker.uniqueToken(() -> TOKEN_RESULT, String -> false);
+        FileMarkerHelper.uniqueToken(() -> TOKEN_RESULT, String -> false);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class FileMarkerTest {
         Path path = testFile.toPath();
 
         // when
-        String token = FileMarker.markTestClass(path);
+        String token = FileMarkerHelper.markTestClass(path);
         final byte[] readToken = (byte[]) Files.getAttribute(path, "user:test_class_id");
 
         // then

@@ -10,10 +10,9 @@ import org.testng.ITestResult;
  * Created by Przemek on 16.10.2016.
  */
 @Getter @Setter
-public abstract class GlobalListener implements IInvokedMethodListener, Comparable<GlobalListener> {
+public abstract class GlobalListener extends PriorityAwareListener {
     private Boolean executed = false;
     private Boolean cleanedAfter = false;
-    protected int priority;
 
     protected GlobalListener() {
         this.priority = 100;
@@ -29,16 +28,10 @@ public abstract class GlobalListener implements IInvokedMethodListener, Comparab
 
     @Override
     public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
-        if(cleanedAfter) {
+        if(!cleanedAfter) {
             cleanedAfter = true;
             after(iInvokedMethod, iTestResult);
         }
-    }
-
-    @Override
-    public int compareTo(GlobalListener listener) {
-        if (this.priority == listener.priority) return 0;
-        return this.priority < listener.priority ? 1 : -1;
     }
 
     public abstract void before(IInvokedMethod iInvokedMethod, ITestResult iTestResult);
