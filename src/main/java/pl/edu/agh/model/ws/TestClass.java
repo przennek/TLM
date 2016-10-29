@@ -17,4 +17,9 @@ public class TestClass {
     private String tokenId;
     private String className;
     private List<String> testMethods;
+
+    @Override
+    public String toString() {
+        return this.tokenId;
+    }
 }

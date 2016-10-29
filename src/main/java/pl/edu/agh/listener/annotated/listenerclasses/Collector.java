@@ -1,6 +1,5 @@
 package pl.edu.agh.listener.annotated.listenerclasses;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.IInvokedMethod;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static pl.edu.agh.listener.annotated.listenerclasses.FileMarker.registeredTests;
 import static pl.edu.agh.listener.util.FileMarkerHelper.*;
 import static pl.edu.agh.listener.util.ListenerHelper.getTestClassName;
 import static pl.edu.agh.listener.util.ListenerHelper.hasAnnotation;
@@ -53,7 +51,7 @@ public class Collector extends PriorityAwareListener {
                                 .testMethods(parseOutTestMethods(iInvokedMethod));
 
                         // register test
-                        if (!register(testClass) && registeredTests.contains(path)) {
+                        if (!register(testClass)) {
                             log.error("Failed to register token: " + token + ", on file: " + path.toString());
                             deleteMark(path);
                         }
@@ -82,14 +80,7 @@ public class Collector extends PriorityAwareListener {
 
     // TODO make an endpoint call
     private Boolean register(TestClass testClass) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            String json = mapper.writeValueAsString(testClass);
-            System.out.println(json);
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            return false;
-        }
+
         return false;
     }
 
