@@ -80,7 +80,6 @@ public class Collector extends PriorityAwareListener {
 
     // TODO make an endpoint call
     private Boolean register(TestClass testClass) {
-
         return false;
     }
 
