@@ -1,7 +1,6 @@
 package pl.edu.agh.listener.globals;
 
 import org.testng.IInvokedMethod;
-import org.testng.IInvokedMethodListener;
 import org.testng.ITestResult;
 import org.testng.SkipException;
 
@@ -72,11 +71,12 @@ public class LoadListener extends GlobalListener {
                 try {
                     String className = listener.toString()
                             .replaceAll("\\\\", ".")
+                            .replaceAll("/", ".")
                             .replaceAll("src.main.java.", "")
                             .replaceAll(".java", "");
                     listeners.add((T) Class.forName(className).getConstructor().newInstance());
                 } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage(), e);
                     throw new SkipException(e.getMessage());
                 }
             });

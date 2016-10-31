@@ -7,10 +7,7 @@ import pl.edu.agh.listener.exceptions.TokenCouldNotBeParsedException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.function.Function;
@@ -69,6 +66,8 @@ public class FileMarkerHelper {
         try {
             readToken = (byte[]) Files.getAttribute(path, "user:test_class_id");
         } catch (NoSuchFileException e) {
+            return "";
+        } catch (FileSystemException e) {
             return "";
         } catch (IOException e) {
             log.error(e.getMessage(), e);
