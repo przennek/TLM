@@ -5,8 +5,10 @@ import org.testng.IInvokedMethod;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import pl.edu.agh.listener.annotated.annotations.TestType;
+import pl.edu.agh.listener.exceptions.TestClassDataParseException;
 import pl.edu.agh.listener.exceptions.TokenCouldNotBeParsedException;
 import pl.edu.agh.listener.globals.PriorityAwareListener;
+import pl.edu.agh.listener.util.JavaDocParser;
 import pl.edu.agh.model.ws.TestClass;
 
 import java.io.IOException;
@@ -19,6 +21,7 @@ import static pl.edu.agh.listener.annotated.listenerclasses.FileMarker.registere
 import static pl.edu.agh.listener.util.FileMarkerHelper.*;
 import static pl.edu.agh.listener.util.ListenerHelper.getTestClassName;
 import static pl.edu.agh.listener.util.ListenerHelper.hasAnnotation;
+import static pl.edu.agh.listener.util.TestClassDataExtractor.extractData;
 
 /**
  * Created by Przemek on 16.10.2016.
@@ -48,10 +51,12 @@ public class Collector extends PriorityAwareListener {
                     }
                     if (!isTestInDB(token)) {
                         TestClass testClass = new TestClass()
-                                .tokenId(token)
-                                .className(getTestClassName(iInvokedMethod))
-                                .testMethods(parseOutTestMethods(iInvokedMethod));
-
+                                .tokenId(token);
+                        try {
+                            extractData(testClass, iInvokedMethod, path);
+                        } catch(TestClassDataParseException e) {
+                            log.error("Critical error during parsing test data from file: " + path.toString());
+                        }
                         // register test
                         if (!register(testClass) && registeredTests.contains(path)) {
                             log.error("Failed to register token: " + token + ", on file: " + path.toString());
@@ -67,18 +72,7 @@ public class Collector extends PriorityAwareListener {
         }
     }
 
-    private List<String> parseOutTestMethods(IInvokedMethod iInvokedMethod) {
-        List<ITestNGMethod> methodList = Arrays.asList(iInvokedMethod.getTestMethod().getTestClass().getTestMethods());
-        List<String> toStringMethods = new ArrayList<>(methodList.size());
-        methodList.stream()
-                .filter(ITestNGMethod::isTest)
-                .forEach(method -> {
-                    String methodName = method.toString();
-                    methodName = methodName.substring(0, methodName.indexOf("["));
-                    toStringMethods.add(methodName);
-                });
-        return toStringMethods;
-    }
+
 
     // TODO make an endpoint call
     private Boolean register(TestClass testClass) {
@@ -94,7 +88,6 @@ public class Collector extends PriorityAwareListener {
     }
 
     // TODO fill up
-    private Boolean isTestInDB(String token) {
-        return false;
+    private Boolean isTestInDB(String token) {return false;
     }
 }

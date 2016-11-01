@@ -5,18 +5,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Przemek on 26.10.2016.
+ * Created by Kamil on 31.10.2016.
  */
+
 @Getter @Setter @Accessors(fluent = true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.NONE)
-public class TestClass {
-    private String tokenId;
-    private String className;
-    private String classComment;
-    private List<JavaDocTag> classTags = new ArrayList<>();
-    private List<TestMethod> testMethods = new ArrayList<>();
+public class JavaDocTag {
+    private String tagName;
+    private String tagText;
 }

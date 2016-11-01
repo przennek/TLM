@@ -1,5 +1,6 @@
 package pl.edu.agh.listener.util;
 
+import javafx.scene.image.Image;
 import org.testng.annotations.Test;
 import pl.edu.agh.listener.annotated.annotations.TestType;
 
