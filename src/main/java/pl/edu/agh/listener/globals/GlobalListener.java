@@ -3,7 +3,6 @@ package pl.edu.agh.listener.globals;
 import lombok.Getter;
 import lombok.Setter;
 import org.testng.IInvokedMethod;
-import org.testng.IInvokedMethodListener;
 import org.testng.ITestResult;
 
 /**

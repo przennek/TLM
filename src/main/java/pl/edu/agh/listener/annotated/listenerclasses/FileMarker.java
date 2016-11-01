@@ -8,8 +8,6 @@ import pl.edu.agh.listener.util.FileMarkerHelper;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 import static pl.edu.agh.listener.util.FileMarkerHelper.getToken;
 import static pl.edu.agh.listener.util.FileMarkerHelper.preparePath;
@@ -19,7 +17,6 @@ import static pl.edu.agh.listener.util.FileMarkerHelper.preparePath;
  */
 public class FileMarker extends PriorityAwareListener {
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(Collector.class);
-    public static List<Path> registeredTests = new ArrayList<>();
 
     public FileMarker() {
         this.priority = 100;
@@ -36,7 +33,6 @@ public class FileMarker extends PriorityAwareListener {
             try {
                 Path testCasePath = preparePath(iInvokedMethod.getTestMethod());
                 if ("".equals(getToken(testCasePath))) {
-                    registeredTests.add(testCasePath);
                     FileMarkerHelper.markTestClass(testCasePath);
                 }
             } catch (TokenCouldNotBeParsedException | IOException ignored) {

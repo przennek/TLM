@@ -19,4 +19,8 @@ public class TestClass {
     private String classComment;
     private List<JavaDocTag> classTags = new ArrayList<>();
     private List<TestMethod> testMethods = new ArrayList<>();
+    @Override
+    public String toString() {
+        return this.tokenId;
+    }
 }
