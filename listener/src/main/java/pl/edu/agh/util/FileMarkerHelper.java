@@ -2,10 +2,13 @@ package pl.edu.agh.util;
 
 import org.assertj.core.util.VisibleForTesting;
 import org.testng.ITestNGMethod;
+import pl.edu.agh.exceptions.TLMPropertiesNotFoundException;
 import pl.edu.agh.exceptions.TokenCouldNotBeParsedException;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
@@ -19,7 +22,22 @@ import java.util.function.Supplier;
  */
 public class FileMarkerHelper {
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(FileMarkerHelper.class);
-    private URL PROPERTIES_PATH = getClass().getResource("../../../../tlm.properties");
+    private URL PROPERTIES_PATH;
+
+    public FileMarkerHelper() throws TLMPropertiesNotFoundException {
+        try {
+            if (Files.exists(Paths.get("src/resources/tlm.properties"))) {
+                PROPERTIES_PATH = new File("src/resources/tlm.properties").toURI().toURL();
+            } else if (Files.exists(Paths.get("src/main/resources/tlm.properties"))) {
+                PROPERTIES_PATH = new File("src/main/resources/tlm.properties").toURI().toURL();
+            } else {
+                final String message = "Create tlm.properties file under: src/main/resources/ or src/resources";
+                throw new TLMPropertiesNotFoundException(message);
+            }
+        } catch (MalformedURLException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
 
     public String markTestClass(Path path) {
         // TODO verify in db if token is unique
@@ -52,8 +70,12 @@ public class FileMarkerHelper {
         }
 
         // absolute path to test case
-        String packagePath = properties.getProperty("testpackagepath").replaceAll("\"", "");
-        return Paths.get(packagePath + "/" + method.getTestClass().toString().replaceAll("\\.", "/").replaceAll("]", "").split(" ")[2] + ".java");
+        try {
+            String packagePath = properties.getProperty("testpackagepath").replaceAll("\"", "");
+            return Paths.get(packagePath + "/" + method.getTestClass().toString().replaceAll("\\.", "/").replaceAll("]", "").split(" ")[2] + ".java");
+        } catch (NullPointerException npe) {
+            throw new TLMPropertiesNotFoundException("testpackagepath property not found! Make sure it's in tlm.properties file!");
+        }
     }
 
     public String getToken(Path path) throws TokenCouldNotBeParsedException {

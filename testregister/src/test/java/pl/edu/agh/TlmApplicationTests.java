@@ -13,8 +13,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pl.edu.agh.annotated.annotations.TestType;
-import pl.edu.agh.model.mongo.User;
-import pl.edu.agh.model.mongo.UserRepository;
+//import pl.edu.agh.model.mongo.User;
+//import pl.edu.agh.model.mongo.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static pl.edu.agh.annotated.annotations.TestTypes.IntegrationTest;
@@ -26,24 +26,24 @@ import static pl.edu.agh.annotated.annotations.TestTypes.IntegrationTest;
 public class TlmApplicationTests extends AbstractTestNGSpringContextTests {
     private final String UNAME = "test";
     private final String PASSWD = "123";
-    private User testUser;
+//    private User testUser;
 
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Autowired
-    private UserRepository repository;
+//    @Autowired
+//    private UserRepository repository;
 
-    @BeforeClass
-    public void setupTestUser() {
-        testUser = new User().login(UNAME).password(PASSWD).role("USER");
-        repository.save(testUser);
-    }
+//    @BeforeClass
+//    public void setupTestUser() {
+//        testUser = new User().login(UNAME).password(PASSWD).role("USER");
+//        repository.save(testUser);
+//    }
 
-    @AfterClass
-    public void flushTestUser() {
-        repository.delete(testUser);
-    }
+//    @AfterClass
+//    public void flushTestUser() {
+//        repository.delete(testUser);
+//    }
 
     @Test
     public void shouldReturn200() throws Exception {

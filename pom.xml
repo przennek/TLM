@@ -12,8 +12,9 @@
     <description>Test Lifecycle Management </description>
 
     <modules>
-        <module>register</module>
+        <module>testregister</module>
         <module>gateway</module>
         <module>listener</module>
+        <module>auth</module>
     </modules>
 </project>

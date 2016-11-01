@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>pl.edu.agh.register</groupId>
-	<artifactId>register</artifactId>
+	<artifactId>testregister</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
