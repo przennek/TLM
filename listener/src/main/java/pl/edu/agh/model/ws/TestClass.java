@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,8 +16,9 @@ import java.util.List;
 public class TestClass {
     private String tokenId;
     private String className;
-    private List<String> testMethods;
-
+    private String classComment;
+    private List<JavaDocTag> classTags = new ArrayList<>();
+    private List<TestMethod> testMethods = new ArrayList<>();
     @Override
     public String toString() {
         return this.tokenId;
