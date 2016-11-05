@@ -76,7 +76,10 @@ public class LoadListener extends GlobalListener {
     private <T> List<T> loadListeners(URL path) {
         List<T> listeners = new LinkedList<>();
         try {
-            Files.list(Paths.get(path.getPath())).forEach(listener -> {
+            String strPath = '/' == path.getPath().toCharArray()[0]
+                    ? path.getPath().substring(1, path.getPath().length()) : path.getPath();
+
+            Files.list(Paths.get(strPath)).forEach(listener -> {
                 try {
                     String className = listener.toString()
                             .replaceAll("\\\\", ".")
