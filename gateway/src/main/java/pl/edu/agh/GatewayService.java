@@ -13,9 +13,9 @@ import pl.edu.agh.filters.RequestLogFilter;
 @EnableZuulProxy
 @EnableDiscoveryClient
 @SpringBootApplication
-public class GatewayApp {
+public class GatewayService {
     public static void main(String[] args) {
-        SpringApplication.run(GatewayApp.class, args);
+        SpringApplication.run(GatewayService.class, args);
     }
 
     @Bean

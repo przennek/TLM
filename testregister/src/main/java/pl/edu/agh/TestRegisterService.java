@@ -10,12 +10,12 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-public class TlmApplication implements CommandLineRunner {
+public class TestRegisterService implements CommandLineRunner {
 	@Autowired
 	private DiscoveryClient discoveryClient;
 
 	public static void main(String[] args) {
-		SpringApplication.run(TlmApplication.class, args);
+		SpringApplication.run(TestRegisterService.class, args);
 	}
 
 	@Override
