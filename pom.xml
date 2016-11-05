@@ -16,5 +16,6 @@
         <module>gateway</module>
         <module>listener</module>
         <module>auth</module>
+        <module>discovery</module>
     </modules>
 </project>

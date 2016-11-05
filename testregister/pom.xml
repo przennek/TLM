@@ -23,6 +23,12 @@
 	</properties>
 
 	<dependencies>
+        <!-- eureka service discovery dependency -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -95,8 +101,29 @@
 			<artifactId>listener</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<!-- end test -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-commons</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <!-- end test -->
     </dependencies>
+
+    <!-- eureka service discovery dependency -->
+    <!-- services won't be properly registered without this -->
+    <!-- TODO investigate why/how does it work -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Brixton.SR5</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 	<build>
 		<plugins>
 			<plugin>
