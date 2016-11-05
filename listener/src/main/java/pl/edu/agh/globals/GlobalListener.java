@@ -8,7 +8,8 @@ import org.testng.ITestResult;
 /**
  * Created by Przemek on 16.10.2016.
  */
-@Getter @Setter
+@Getter
+@Setter
 public abstract class GlobalListener extends PriorityAwareListener {
     private Boolean executed = false;
     private Boolean cleanedAfter = false;
@@ -19,7 +20,7 @@ public abstract class GlobalListener extends PriorityAwareListener {
 
     @Override
     public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
-        if(!executed) {
+        if (!executed) {
             executed = true;
             before(iInvokedMethod, iTestResult);
         }
@@ -27,7 +28,7 @@ public abstract class GlobalListener extends PriorityAwareListener {
 
     @Override
     public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
-        if(!cleanedAfter) {
+        if (!cleanedAfter) {
             cleanedAfter = true;
             after(iInvokedMethod, iTestResult);
         }

@@ -12,5 +12,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TestType {
     TestTypes value();
+
     boolean collectionEnabled() default true;
 }

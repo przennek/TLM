@@ -5,13 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 /**
  * Created by Kamil on 31.10.2016.
  */
 
-@Getter @Setter @Accessors(fluent = true)
+@Getter
+@Setter
+@Accessors(fluent = true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class TestMethodParameter {
     private String paramName;

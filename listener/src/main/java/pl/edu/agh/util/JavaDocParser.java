@@ -1,8 +1,8 @@
-package pl.edu.agh.listener.util;
+package pl.edu.agh.util;
 
 import com.sun.javadoc.*;
 import com.sun.tools.javadoc.Main;
-import pl.edu.agh.listener.exceptions.TestClassDataParseException;
+import pl.edu.agh.exceptions.TestClassDataParseException;
 import pl.edu.agh.model.ws.JavaDocTag;
 import pl.edu.agh.model.ws.TestClass;
 import pl.edu.agh.model.ws.TestMethod;
@@ -25,7 +25,7 @@ public class JavaDocParser extends Doclet {
         //Execute JavaDoc Generation process and get required data
         try {
             Main.execute("", JavaDocAnalyzer.class.getName(), new String[]{path.toString()});
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new TestClassDataParseException();
         }
         return parsedDocs;

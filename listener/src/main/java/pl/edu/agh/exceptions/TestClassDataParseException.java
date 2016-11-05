@@ -1,4 +1,4 @@
-package pl.edu.agh.listener.exceptions;
+package pl.edu.agh.exceptions;
 
 /**
  * Created by Kamil on 01.11.2016.

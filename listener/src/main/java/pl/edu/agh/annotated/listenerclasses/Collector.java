@@ -1,22 +1,19 @@
-package pl.edu.agh.listener.annotated.listenerclasses;
+package pl.edu.agh.annotated.listenerclasses;
 
 import org.testng.IInvokedMethod;
-import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
-import pl.edu.agh.listener.annotated.annotations.TestType;
-import pl.edu.agh.listener.exceptions.TestClassDataParseException;
-import pl.edu.agh.listener.exceptions.TokenCouldNotBeParsedException;
-import pl.edu.agh.listener.globals.PriorityAwareListener;
-import pl.edu.agh.listener.util.JavaDocParser;
+import pl.edu.agh.annotated.annotations.TestType;
+import pl.edu.agh.exceptions.TestClassDataParseException;
+import pl.edu.agh.exceptions.TokenCouldNotBeParsedException;
+import pl.edu.agh.globals.PriorityAwareListener;
 import pl.edu.agh.model.ws.TestClass;
 import pl.edu.agh.util.FileMarkerHelper;
 import pl.edu.agh.util.ListenerHelper;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import static pl.edu.agh.util.TestClassDataExtractor.extractData;
 
 /**
  * Created by Przemek on 16.10.2016.
@@ -50,7 +47,7 @@ public class Collector extends PriorityAwareListener {
                                 .tokenId(token);
                         try {
                             extractData(testClass, iInvokedMethod, path);
-                        } catch(TestClassDataParseException e) {
+                        } catch (TestClassDataParseException e) {
                             log.error("Critical error during parsing test data from file: " + path.toString());
                         }
                         // register test
@@ -68,15 +65,14 @@ public class Collector extends PriorityAwareListener {
         }
     }
 
-
-
     // TODO make an endpoint call
     private Boolean register(TestClass testClass) {
         return false;
     }
 
     // TODO fill up
-    private Boolean isTestInDB(String token) {return false;
+    private Boolean isTestInDB(String token) {
+        return false;
     }
 
     @Override

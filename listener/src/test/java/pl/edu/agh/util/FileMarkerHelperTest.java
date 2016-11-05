@@ -113,7 +113,7 @@ public class FileMarkerHelperTest {
         Path mypath = helper.preparePath(method);
 
         // then
-        assertEquals(mypath.toString(), "src/test/java/pl/edu/agh/FileMarkerHelperTest.java");
+        assertEquals(mypath.toString().replaceAll("\\\\", "").replaceAll("/", ""), "srctestjavapleduaghFileMarkerHelperTest.java");
     }
 
     private String readToken(Path path) throws IOException {
