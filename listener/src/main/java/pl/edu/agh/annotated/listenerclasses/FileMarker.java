@@ -4,7 +4,7 @@ import org.testng.IInvokedMethod;
 import org.testng.ITestResult;
 import pl.edu.agh.exceptions.TokenCouldNotBeParsedException;
 import pl.edu.agh.globals.PriorityAwareListener;
-import pl.edu.agh.util.FileMarkerHelper;
+import pl.edu.agh.util.FileHelper;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -28,10 +28,9 @@ public class FileMarker extends PriorityAwareListener {
     public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         if (iTestResult.isSuccess()) {
             try {
-                FileMarkerHelper helper = new FileMarkerHelper();
-                Path testCasePath = helper.preparePath(iInvokedMethod.getTestMethod());
-                if ("".equals(helper.getToken(testCasePath))) {
-                    helper.markTestClass(testCasePath);
+                Path testCasePath = FileHelper.get().preparePath(iInvokedMethod.getTestMethod());
+                if ("".equals(FileHelper.get().getToken(testCasePath))) {
+                    FileHelper.get().markTestClass(testCasePath);
                 }
             } catch (TokenCouldNotBeParsedException | IOException ignored) {
                 // carry on

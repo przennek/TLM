@@ -10,6 +10,8 @@ import pl.edu.agh.globals.GlobalListener;
 
 // TODO create connection with TLM
 public class TLMConnectionListener extends GlobalListener {
+    // TODO move this scratch to designated encrypted session file.
+    private static String sessionId;
 
     public TLMConnectionListener() {
         super(98);
