@@ -20,11 +20,17 @@ import java.util.function.Supplier;
 /**
  * Created by Przemek on 24.10.2016.
  */
-public class FileMarkerHelper {
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(FileMarkerHelper.class);
+public class FileHelper {
+    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(FileHelper.class);
+    private static FileHelper instance;
     private URL PROPERTIES_PATH;
 
-    public FileMarkerHelper() throws TLMPropertiesNotFoundException {
+    public static FileHelper get() {
+        if(instance == null) instance = new FileHelper();
+        return instance;
+    }
+
+    private FileHelper() throws TLMPropertiesNotFoundException {
         try {
             if (Files.exists(Paths.get("src/resources/tlm.properties"))) {
                 PROPERTIES_PATH = new File("src/resources/tlm.properties").toURI().toURL();
@@ -37,6 +43,11 @@ public class FileMarkerHelper {
         } catch (MalformedURLException e) {
             log.error(e.getMessage(), e);
         }
+    }
+
+    public String getTLMPropertiesPath() {
+        return '/' == PROPERTIES_PATH.getPath().toCharArray()[0]
+                ? PROPERTIES_PATH.getPath().substring(1, PROPERTIES_PATH.getPath().length()) : PROPERTIES_PATH.getPath();
     }
 
     public String markTestClass(Path path) {

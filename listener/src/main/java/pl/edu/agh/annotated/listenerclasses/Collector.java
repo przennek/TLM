@@ -7,7 +7,7 @@ import pl.edu.agh.exceptions.TestClassDataParseException;
 import pl.edu.agh.exceptions.TokenCouldNotBeParsedException;
 import pl.edu.agh.globals.PriorityAwareListener;
 import pl.edu.agh.model.ws.TestClass;
-import pl.edu.agh.util.FileMarkerHelper;
+import pl.edu.agh.util.FileHelper;
 import pl.edu.agh.util.ListenerHelper;
 
 import java.io.IOException;
@@ -35,9 +35,8 @@ public class Collector extends PriorityAwareListener {
         if (ListenerHelper.hasAnnotation(iInvokedMethod, TestType.class)) {
             if (iTestResult.isSuccess()) {
                 try {
-                    FileMarkerHelper helper = new FileMarkerHelper();
-                    Path path = helper.preparePath(iInvokedMethod.getTestMethod());
-                    String token = helper.getToken(path);
+                    Path path = FileHelper.get().preparePath(iInvokedMethod.getTestMethod());
+                    String token = FileHelper.get().getToken(path);
                     if ("".equals(token)) {
                         log.error("Error while reading token from test file, does your OS support TLM?");
                         throw new TokenCouldNotBeParsedException();
@@ -53,7 +52,7 @@ public class Collector extends PriorityAwareListener {
                         // register test
                         if (!register(testClass)) {
                             log.error("Failed to register token: " + token + ", on file: " + path.toString());
-                            helper.deleteMark(path);
+                            FileHelper.get().deleteMark(path);
                         }
                     }
                 } catch (TokenCouldNotBeParsedException ignored) {

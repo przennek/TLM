@@ -23,11 +23,10 @@ import static pl.edu.agh.annotated.annotations.TestTypes.UnitTest;
  * Created by Przemek on 24.10.2016.
  */
 @TestType(UnitTest)
-public class FileMarkerHelperTest {
+public class FileHelperTest {
     private static final String TOKEN_RESULT = "testing";
     private File testFile;
     private Path path;
-    private FileMarkerHelper helper = new FileMarkerHelper();
 
     @BeforeMethod
     public void prepareFile() throws IOException {
@@ -47,7 +46,7 @@ public class FileMarkerHelperTest {
         String result;
 
         // when
-        result = helper.uniqueToken(() -> TOKEN_RESULT, String -> true);
+        result = FileHelper.get().uniqueToken(() -> TOKEN_RESULT, String -> true);
 
         // then
         assertEquals(result, TOKEN_RESULT);
@@ -56,7 +55,7 @@ public class FileMarkerHelperTest {
     @Test(expectedExceptions = RuntimeException.class)
     public void shouldNotGenerateToken() {
         // should throw runtime exception
-        helper.uniqueToken(() -> TOKEN_RESULT, String -> false);
+        FileHelper.get().uniqueToken(() -> TOKEN_RESULT, String -> false);
     }
 
     @Test
@@ -65,7 +64,7 @@ public class FileMarkerHelperTest {
         // test file
 
         // when
-        String token = helper.markTestClass(path);
+        String token = FileHelper.get().markTestClass(path);
 
         // then
         assertEquals(token, readToken(path));
@@ -74,16 +73,16 @@ public class FileMarkerHelperTest {
     @Test
     public void shouldReturnTokenThenDelete() throws TokenCouldNotBeParsedException, IOException {
         // given
-        helper.markTestClass(path);
+        FileHelper.get().markTestClass(path);
 
         // when
-        String token = helper.getToken(path);
+        String token = FileHelper.get().getToken(path);
 
         // then
         assertEquals(token, readToken(path));
 
         // when
-        helper.deleteMark(path);
+        FileHelper.get().deleteMark(path);
 
         // then
         assertEquals(readToken(path), "");
@@ -95,7 +94,7 @@ public class FileMarkerHelperTest {
         // test file without token
 
         // when
-        String token = helper.getToken(path);
+        String token = FileHelper.get().getToken(path);
 
         // then
         assertEquals(token, "");
@@ -109,11 +108,11 @@ public class FileMarkerHelperTest {
 
         // when
         when(method.getTestClass()).thenReturn(clazz);
-        when(clazz.toString()).thenReturn("[TestClass name=class pl.edu.agh.FileMarkerHelperTest]");
-        Path mypath = helper.preparePath(method);
+        when(clazz.toString()).thenReturn("[TestClass name=class pl.edu.agh.FileHelperTest]");
+        Path mypath = FileHelper.get().preparePath(method);
 
         // then
-        assertEquals(mypath.toString().replaceAll("\\\\", "").replaceAll("/", ""), "srctestjavapleduaghFileMarkerHelperTest.java");
+        assertEquals(mypath.toString().replaceAll("\\\\", "").replaceAll("/", ""), "srctestjavapleduaghFileHelperTest.java");
     }
 
     private String readToken(Path path) throws IOException {
