@@ -17,5 +17,6 @@
         <module>listener</module>
         <module>auth</module>
         <module>discovery</module>
+        <module>devtoolkit</module>
     </modules>
 </project>

@@ -8,14 +8,12 @@ import java.util.concurrent.TimeoutException;
 public class Receiver {
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(Sender.class);
     private String host;
-    private String exchangeName;
 
-    public Receiver(String host, String exchangeName) {
+    public Receiver(String host) {
         this.host = host;
-        this.exchangeName = exchangeName;
     }
 
-    public void register(String... bindingKeys) throws IOException, TimeoutException {
+    public void register(String exchangeName, java.util.function.Consumer<String> f, String... bindingKeys) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(host);
 
@@ -34,7 +32,8 @@ public class Receiver {
             public void handleDelivery(String consumerTag, Envelope envelope,
                                        AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body, "UTF-8");
-                System.out.println(" [x] Received '" + envelope.getRoutingKey() + "':'" + message + "'");
+                log.debug("<Consumer> '" + envelope.getRoutingKey() + "':'" + message + "'");
+                f.accept(message);
             }
         });
     }
