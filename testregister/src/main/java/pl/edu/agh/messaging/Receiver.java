@@ -1,14 +1,41 @@
 package pl.edu.agh.messaging;
 
-import java.io.UnsupportedEncodingException;
+import com.rabbitmq.client.*;
+
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 public class Receiver {
+    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(Sender.class);
+    private String host;
+    private String exchangeName;
 
-    public void receiveMessage(byte[] message) {
-        try {
-            System.out.println("Received <" + new String(message, "UTF-8") + ">");
-        } catch (UnsupportedEncodingException e) {
-            // whatever, if your system doesn't support utf-8 it's your fault, happy debugging
+    public Receiver(String host, String exchangeName) {
+        this.host = host;
+        this.exchangeName = exchangeName;
+    }
+
+    public void register(String... bindingKeys) throws IOException, TimeoutException {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost(host);
+
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
+
+        channel.exchangeDeclare(exchangeName, "topic");
+        String queueName = channel.queueDeclare().getQueue();
+
+        for (String bindingKey : bindingKeys) {
+            channel.queueBind(queueName, exchangeName, bindingKey);
         }
+
+        channel.basicConsume(queueName, true, new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope,
+                                       AMQP.BasicProperties properties, byte[] body) throws IOException {
+                String message = new String(body, "UTF-8");
+                System.out.println(" [x] Received '" + envelope.getRoutingKey() + "':'" + message + "'");
+            }
+        });
     }
 }
