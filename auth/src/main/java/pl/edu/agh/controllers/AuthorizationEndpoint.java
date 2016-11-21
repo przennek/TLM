@@ -18,7 +18,7 @@ public class AuthorizationEndpoint {
     Sender sender;
 
     @Secured({"ROLE_USER"})
-    @RequestMapping("/resource")
+    @RequestMapping("/auth")
     public String auth(@AuthenticationPrincipal UserDetails userDetails) {
         String sessionid = RequestContextHolder.currentRequestAttributes().getSessionId();
         sender.sendOverTopic("auth-exchange", "auth.token.broadcast.sessionid", sessionid);
