@@ -29,6 +29,6 @@ public class TestRegisterService implements CommandLineRunner {
         // TODO create fancy log4j config as in http://logging.apache.org/log4j/1.2/manual.html
         BasicConfigurator.configure();
         receiver.register("test-exchange", System.out::println, "test.*", "test-pipe.info.*");
-        receiver.register("auth-pipe", System.out::println, "broadcast.*");
+        receiver.register("auth-exchange", System.out::println, "auth.token.broadcast.*");
     }
 }

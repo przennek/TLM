@@ -1,4 +1,4 @@
-package pl.edu.agh.beans;
+package pl.edu.agh.messaging.beans;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

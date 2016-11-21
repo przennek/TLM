@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.ComponentScan;
 import pl.edu.agh.model.mongo.User;
 import pl.edu.agh.model.mongo.UserRepository;
 
@@ -14,6 +15,7 @@ import pl.edu.agh.model.mongo.UserRepository;
  */
 @EnableEurekaClient
 @SpringBootApplication
+@ComponentScan("pl.edu.agh")
 public class AuthService implements CommandLineRunner {
     @Autowired
     private UserRepository repository;
@@ -30,7 +32,7 @@ public class AuthService implements CommandLineRunner {
 
         // create and save some test users
         // TODO user creation from web app
-        repository.save(new User().login("przemek").password("3uLhYwc3UmLeCr8R").role("USER"));
-        repository.save(new User().login("kamil").password("s3K923jrZVt4VRbL").role("USER"));
+        repository.save(new User().login("przemek").password("3uLhYwc3UmLeCr8R").role("ROLE_USER"));
+        repository.save(new User().login("kamil").password("s3K923jrZVt4VRbL").role("ROLE_USER"));
     }
 }
