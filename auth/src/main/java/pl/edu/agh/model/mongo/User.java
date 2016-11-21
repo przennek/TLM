@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 /**
@@ -13,7 +14,7 @@ import org.springframework.data.annotation.Id;
 @ToString
 public class User {
     @Id
-    public String id;
+    public ObjectId id;
     public String login;
     public String password;
     public String role;
