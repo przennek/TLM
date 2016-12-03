@@ -13,8 +13,6 @@ import org.springframework.data.annotation.Id;
 @Getter @Setter @Accessors(fluent = true)
 @ToString
 public class User {
-    @Id
-    public ObjectId id;
     public String login;
     public String password;
     public String role;

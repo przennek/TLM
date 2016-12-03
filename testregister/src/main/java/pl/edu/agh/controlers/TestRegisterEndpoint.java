@@ -20,6 +20,7 @@ public class TestRegisterEndpoint {
 
     @RequestMapping(value = "/addtest/{testClass}", method = RequestMethod.POST)
     @ExceptionHandler(IOException.class)
+
     public String registerTest(@PathVariable TestClass testClass) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         try {

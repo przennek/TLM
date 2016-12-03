@@ -35,7 +35,7 @@ public class MongoDBAuthenticationProvider extends AbstractUserDetailsAuthentica
         UserDetails loadedUser;
 
         try {
-            pl.edu.agh.model.mongo.User usr = userMapper((Document) users.find(eq("login", "przemek")).first());
+            pl.edu.agh.model.mongo.User usr = userMapper((Document) users.find(eq("login", username)).first());
             loadedUser = new User(usr.login(), usr.password(), Arrays.asList(new SimpleGrantedAuthority("ROLE_" + usr.role())));
         } catch (Exception repositoryProblem) {
             throw new InternalAuthenticationServiceException(repositoryProblem.getMessage(), repositoryProblem);
@@ -45,12 +45,10 @@ public class MongoDBAuthenticationProvider extends AbstractUserDetailsAuthentica
     }
 
     private pl.edu.agh.model.mongo.User userMapper(Document user) {
-        final ObjectId id = user.get("_id", ObjectId.class);
         final String login = user.get("login", String.class);
         final String password = user.get("password", String.class);
         final String role = user.get("role", String.class);
         return new pl.edu.agh.model.mongo.User()
-                .id(id)
                 .login(login)
                 .password(password)
                 .role(role);

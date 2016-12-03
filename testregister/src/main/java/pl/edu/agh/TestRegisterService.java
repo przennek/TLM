@@ -7,10 +7,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.access.annotation.Secured;
 import pl.edu.agh.messaging.Receiver;
+import pl.edu.agh.sessionmanager.SessionManager;
 
 @EnableDiscoveryClient
 @SpringBootApplication
+@Secured({"ROLE_USER", "ROLE_ADMIN"})
 @ComponentScan("pl.edu.agh")
 public class TestRegisterService implements CommandLineRunner {
     final Receiver receiver;
@@ -29,6 +32,6 @@ public class TestRegisterService implements CommandLineRunner {
         // TODO create fancy log4j config as in http://logging.apache.org/log4j/1.2/manual.html
         BasicConfigurator.configure();
         receiver.register("test-exchange", System.out::println, "test.*", "test-pipe.info.*");
-        receiver.register("auth-exchange", System.out::println, "auth.token.broadcast.*");
+        receiver.register("auth-exchange", SessionManager::addId, "auth.token.broadcast.*");
     }
 }

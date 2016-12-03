@@ -122,6 +122,16 @@
             <artifactId>amqp-client</artifactId>
             <version>RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>RELEASE</version>
+        </dependency>
         <!-- end test -->
     </dependencies>
 </project>
