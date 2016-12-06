@@ -1,5 +1,6 @@
 package pl.edu.agh.configuration;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -11,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -35,12 +37,15 @@ public class MongoDBAuthenticationProvider extends AbstractUserDetailsAuthentica
         UserDetails loadedUser;
 
         try {
-            pl.edu.agh.model.mongo.User usr = userMapper((Document) users.find(eq("login", username)).first());
+
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String rawPassword = authentication.getCredentials().toString();
+            pl.edu.agh.model.mongo.User usr = userMapper((Document) users.find(eq("login",username )).first());
+            if(!passwordEncoder.matches(rawPassword, usr.password())) throw new Exception("Wrong password");
             loadedUser = new User(usr.login(), usr.password(), Arrays.asList(new SimpleGrantedAuthority("ROLE_" + usr.role())));
         } catch (Exception repositoryProblem) {
             throw new InternalAuthenticationServiceException(repositoryProblem.getMessage(), repositoryProblem);
         }
-
         return loadedUser;
     }
 

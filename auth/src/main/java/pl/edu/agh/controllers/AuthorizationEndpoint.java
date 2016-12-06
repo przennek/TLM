@@ -25,8 +25,8 @@ public class AuthorizationEndpoint {
     @Autowired
     Sender sender;
 
-    //@Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @RequestMapping("/login")
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @RequestMapping("/login-success")
     public String auth(@AuthenticationPrincipal UserDetails userDetails) {
         Collection<SimpleGrantedAuthority> roles = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         String sessionid = RequestContextHolder.currentRequestAttributes().getSessionId();
@@ -34,10 +34,13 @@ public class AuthorizationEndpoint {
         return "{authorization: \"true\"}";
     }
 
-    @RequestMapping("/logout")
-    public void logout() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        auth.setAuthenticated(false);
-        SecurityContextHolder.getContext().setAuthentication(auth);
+//    @RequestMapping("/login-failed")
+//    public String authError() {
+//        return "{authorization: \"false\"}";
+//    }
+
+    @RequestMapping("/logout-success")
+    public String logout() {
+        return "{logout: \"true\"}";
     }
 }

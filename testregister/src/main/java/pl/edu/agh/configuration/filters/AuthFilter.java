@@ -29,11 +29,10 @@ public class AuthFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res,
-                         FilterChain chain) throws IOException, ServletException {
-
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
         String cookie = request.getHeader("cookie");
+        if(cookie == null ) cookie = "";
         Map<String, String> headers = new HashMap<>();
         Arrays.stream(cookie.split(";")).forEach(el -> {
             String[] t = el.split("=");
@@ -45,14 +44,14 @@ public class AuthFilter implements Filter {
             request.getSession().setAttribute("ROLE", user.role());
             request.getSession().setAttribute("USERNAME", user.login());
             chain.doFilter(req, res);
+        } else {
+            ((HttpServletResponse) res).setStatus(401);
+            chain.doFilter(req, res);
         }
-        ((HttpServletResponse) res).setStatus(401);
-        chain.doFilter(req, res);
     }
 
     @Override
     public void init(FilterConfig arg0) throws ServletException {
         // Do nothing
     }
-
 }

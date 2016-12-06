@@ -16,4 +16,12 @@ public class SessionManager {
         JSONObject jsonObj = new JSONObject(json);
         SessionManager.sessionIds.put(jsonObj.getString("sessionId"), new User().login(jsonObj.getString("username")).role(jsonObj.getString("role")));
     }
+
+    public static void flush() {
+        sessionIds.clear();
+    }
+
+    public static void deleteId(String id) {
+        sessionIds.remove(id);
+    }
 }
