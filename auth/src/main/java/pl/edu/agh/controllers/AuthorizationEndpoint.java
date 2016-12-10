@@ -34,11 +34,6 @@ public class AuthorizationEndpoint {
         return "{authorization: \"true\"}";
     }
 
-//    @RequestMapping("/login-failed")
-//    public String authError() {
-//        return "{authorization: \"false\"}";
-//    }
-
     @RequestMapping("/logout-success")
     public String logout() {
         return "{logout: \"true\"}";
