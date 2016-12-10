@@ -9,15 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pl.edu.agh.annotated.annotations.TestType;
-//import pl.edu.agh.model.mongo.User;
-//import pl.edu.agh.model.mongo.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static pl.edu.agh.annotated.annotations.TestTypes.IntegrationTest;
+
+//import pl.edu.agh.model.mongo.User;
+//import pl.edu.agh.model.mongo.UserRepository;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext

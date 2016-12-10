@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import pl.edu.agh.TestRegisterService;
 import pl.edu.agh.logger.TLMLogger;
 import pl.edu.agh.model.ws.TestClass;
 

@@ -2,7 +2,6 @@ package pl.edu.agh.util;
 
 import org.assertj.core.util.VisibleForTesting;
 import org.testng.ITestNGMethod;
-import pl.edu.agh.LoadListener;
 import pl.edu.agh.exceptions.TLMPropertiesNotFoundException;
 import pl.edu.agh.exceptions.TokenCouldNotBeParsedException;
 import pl.edu.agh.logger.TLMLogger;

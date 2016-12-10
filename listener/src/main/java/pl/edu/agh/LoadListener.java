@@ -6,7 +6,6 @@ import org.testng.SkipException;
 import pl.edu.agh.globals.GlobalListener;
 import pl.edu.agh.globals.PriorityAwareListener;
 import pl.edu.agh.logger.TLMLogger;
-import pl.edu.agh.util.FileHelper;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -16,8 +15,6 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 
 
 /**

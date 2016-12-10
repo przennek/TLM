@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 
 /**
  * Created by Przemek on 23.10.2016.

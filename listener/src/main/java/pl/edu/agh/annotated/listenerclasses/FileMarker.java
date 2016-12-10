@@ -2,7 +2,6 @@ package pl.edu.agh.annotated.listenerclasses;
 
 import org.testng.IInvokedMethod;
 import org.testng.ITestResult;
-import pl.edu.agh.LoadListener;
 import pl.edu.agh.exceptions.TokenCouldNotBeParsedException;
 import pl.edu.agh.globals.PriorityAwareListener;
 import pl.edu.agh.logger.TLMLogger;

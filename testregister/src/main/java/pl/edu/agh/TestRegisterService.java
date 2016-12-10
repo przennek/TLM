@@ -7,8 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
-import pl.edu.agh.logger.TLMLogger;
 import org.springframework.security.access.annotation.Secured;
+import pl.edu.agh.logger.TLMLogger;
 import pl.edu.agh.messaging.Receiver;
 import pl.edu.agh.sessionmanager.SessionManager;
 

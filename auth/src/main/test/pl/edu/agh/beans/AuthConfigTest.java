@@ -6,8 +6,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
-import static com.mongodb.client.model.Filters.eq;
-
 /**
  * Created by Przemek on 20.11.2016.
  */
