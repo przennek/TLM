@@ -2,8 +2,10 @@ package pl.edu.agh.util;
 
 import org.assertj.core.util.VisibleForTesting;
 import org.testng.ITestNGMethod;
+import pl.edu.agh.LoadListener;
 import pl.edu.agh.exceptions.TLMPropertiesNotFoundException;
 import pl.edu.agh.exceptions.TokenCouldNotBeParsedException;
+import pl.edu.agh.logger.TLMLogger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +23,7 @@ import java.util.function.Supplier;
  * Created by Przemek on 24.10.2016.
  */
 public class FileHelper {
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(FileHelper.class);
+    private static TLMLogger log = TLMLogger.getLogger(FileHelper.class.getName());
     private static FileHelper instance;
     private URL PROPERTIES_PATH;
 
@@ -56,7 +58,7 @@ public class FileHelper {
         try {
             Files.setAttribute(path, "user:test_class_id", uniqueToken.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-            log.error(e.getStackTrace());
+            log.error("Error while setting token on file attribute. OS probably doesn't support such operations.", e);
         }
         return uniqueToken;
     }
@@ -75,7 +77,7 @@ public class FileHelper {
         try {
             properties.load(new FileInputStream(PROPERTIES_PATH.toString().replaceAll("file:/", "/")));
         } catch (IOException e) {
-            log.error("Error while reading properties file, check your TLM configuration!");
+            log.error("Error while reading properties file, check your TLM configuration!", null);
             log.error(e.getMessage(), e);
             throw e;
         }
@@ -93,7 +95,7 @@ public class FileHelper {
         byte[] readToken;
 
         if (!Files.exists(path)) {
-            log.error("Error while reading test file on path: " + path.toString());
+            log.error("Error while reading test file on path: " + path.toString(), null);
             throw new TokenCouldNotBeParsedException();
         }
 

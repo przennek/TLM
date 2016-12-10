@@ -35,7 +35,7 @@ repositories {
 }
 
 dependencies {
-    compile("pl.edu.agh.scalatoolkit:scalatoolkit:0.0.1-SNAPSHOT") {
+    compile("pl.edu.agh.devtoolkit:devtoolkit:0.0.1-SNAPSHOT") {
         exclude group: "org.springframework"
     }
     compile("org.springframework.boot:spring-boot-starter-web")

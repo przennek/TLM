@@ -2,8 +2,10 @@ package pl.edu.agh.annotated.listenerclasses;
 
 import org.testng.IInvokedMethod;
 import org.testng.ITestResult;
+import pl.edu.agh.LoadListener;
 import pl.edu.agh.exceptions.TokenCouldNotBeParsedException;
 import pl.edu.agh.globals.PriorityAwareListener;
+import pl.edu.agh.logger.TLMLogger;
 import pl.edu.agh.util.FileHelper;
 
 import java.io.IOException;
@@ -13,7 +15,7 @@ import java.nio.file.Path;
  * Created by Przemek on 27.10.2016.
  */
 public class FileMarker extends PriorityAwareListener {
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(Collector.class);
+    private static TLMLogger log = TLMLogger.getLogger(FileMarker.class.getName());
 
     public FileMarker() {
         super(100);

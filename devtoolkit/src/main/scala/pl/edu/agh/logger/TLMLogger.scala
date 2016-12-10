@@ -1,6 +1,6 @@
-package logger
+package pl.edu.agh.logger
 
-import messaging.Sender
+import pl.edu.agh.messaging.Sender
 
 /**
   * Created by Przemek on 04.12.2016.
@@ -15,8 +15,8 @@ trait MessageBrokerLogging {
   def error(msg: String, stack_trace: java.lang.Throwable = null) = applyMSG("ERROR", msg, stack_trace)
 }
 
-class TLMLogger[T] (val sender: Sender, val exchange_name: String) extends MessageBrokerLogging {
-  val logger = org.apache.log4j.Logger.getLogger("java.lang.Object.class")
+class TLMLogger (val tyPe: String, val sender: Sender, val exchange_name: String) extends MessageBrokerLogging {
+  val logger = org.apache.log4j.Logger.getLogger(tyPe)
   override def applyMSG(level: String, msg: String, stack_trace: Throwable): Unit = {
     level match {
       case "INFO" => logger.info(msg, stack_trace);
@@ -26,14 +26,22 @@ class TLMLogger[T] (val sender: Sender, val exchange_name: String) extends Messa
       case "FATAL" => logger.fatal(msg, stack_trace);
       case "ERROR" => logger.error(msg, stack_trace);
     }
-//s"{msg: \"$msg\", stackTrace: \"${stack_trace.getMessage}\"}"
-//    sender.sendOverTopic(exchange_name, s"log.$level", "T")
+
+    try {
+      val stack_message = stack_trace.getMessage
+      val json: String = String.format("{class: \"%s\", level: \"%s\", msg: \"%s\", stack_message: \"%s\" }",
+                                                                                      tyPe, level, msg, stack_message)
+      sender.sendOverTopic(exchange_name, s"log.$level", json)
+    } catch {
+      case e: NullPointerException =>
+        sender.sendOverTopic(exchange_name, s"log.$level", String.format("{class: \"%s\", level: \"%s\", msg: \"%s\"}", tyPe, level, msg))
+    }
   }
 }
 
 object TLMLogger {
-//  @Autowired val sender: Sender = null
-//  def getLogger[T]: TLMLogger[T] = {
-//    new TLMLogger[T](sender, "log-exchange")
-//  }
+  val sender: Sender = new Sender("localhost")
+  def getLogger(c: String): TLMLogger = {
+    new TLMLogger(c, sender, "log-exchange")
+  }
 }

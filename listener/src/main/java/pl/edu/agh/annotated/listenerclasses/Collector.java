@@ -6,6 +6,7 @@ import pl.edu.agh.annotated.annotations.TestType;
 import pl.edu.agh.exceptions.TestClassDataParseException;
 import pl.edu.agh.exceptions.TokenCouldNotBeParsedException;
 import pl.edu.agh.globals.PriorityAwareListener;
+import pl.edu.agh.logger.TLMLogger;
 import pl.edu.agh.model.ws.TestClass;
 import pl.edu.agh.util.FileHelper;
 import pl.edu.agh.util.ListenerHelper;
@@ -19,7 +20,7 @@ import static pl.edu.agh.util.TestClassDataExtractor.extractData;
  * Created by Przemek on 16.10.2016.
  */
 public class Collector extends PriorityAwareListener {
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(Collector.class);
+    private static TLMLogger log = TLMLogger.getLogger(Collector.class.getName());
 
     public Collector() {
         super(99);
@@ -38,7 +39,7 @@ public class Collector extends PriorityAwareListener {
                     Path path = FileHelper.get().preparePath(iInvokedMethod.getTestMethod());
                     String token = FileHelper.get().getToken(path);
                     if ("".equals(token)) {
-                        log.error("Error while reading token from test file, does your OS support TLM?");
+                        log.error("Error while reading token from test file, does your OS support TLM?", null);
                         throw new TokenCouldNotBeParsedException();
                     }
                     if (!isTestInDB(token)) {
@@ -47,18 +48,18 @@ public class Collector extends PriorityAwareListener {
                         try {
                             extractData(testClass, iInvokedMethod, path);
                         } catch (TestClassDataParseException e) {
-                            log.error("Critical error during parsing test data from file: " + path.toString());
+                            log.error("Critical error during parsing test data from file: " + path.toString(), e);
                         }
                         // register test
                         if (!register(testClass)) {
-                            log.error("Failed to register token: " + token + ", on file: " + path.toString());
+                            log.error("Failed to register token: " + token + ", on file: " + path.toString(), null);
                             FileHelper.get().deleteMark(path);
                         }
                     }
                 } catch (TokenCouldNotBeParsedException ignored) {
                     // consume
                 } catch (IOException e) {
-                    log.error("Configuration provided is incorrect. TLM won't work as expected.");
+                    log.error("Configuration provided is incorrect. TLM won't work as expected.", e);
                 }
             }
         }

@@ -5,6 +5,7 @@ import org.testng.ITestResult;
 import org.testng.SkipException;
 import pl.edu.agh.globals.GlobalListener;
 import pl.edu.agh.globals.PriorityAwareListener;
+import pl.edu.agh.logger.TLMLogger;
 import pl.edu.agh.util.FileHelper;
 
 import java.io.IOException;
@@ -16,12 +17,14 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
+
 
 /**
  * Created by Przemek on 16.10.2016.
  */
 public class LoadListener extends GlobalListener {
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(LoadListener.class);
+    private static TLMLogger log = TLMLogger.getLogger(LoadListener.class.getName());
     private URL GLOBAL_LISTENERS_DIR;
     private URL ANN_LISTENERS_DIR;
 
@@ -37,17 +40,17 @@ public class LoadListener extends GlobalListener {
     @Override
     public void before(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         executeGlobalListeners(iInvokedMethod, iTestResult);
-        log.info(String.format("%s <> Loaded all global listeners!", this.toString()));
+        log.debug(String.format("%s <> Loaded all global listeners!", this.toString()), null);
         executeListeners(iInvokedMethod, iTestResult);
-        log.info(String.format("%s <> Loaded all annotation based listeners!", this.toString()));
+        log.debug(String.format("%s <> Loaded all annotation based listeners!", this.toString()), null);
     }
 
     @Override
     public void after(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         globalListeners.forEach(listener -> listener.after(iInvokedMethod, iTestResult));
-        log.info(String.format("%s <> Cleaned up all global listeners!", this.toString()));
+        log.debug(String.format("%s <> Cleaned up all global listeners!", this.toString()), null);
         annListeners.forEach(listener -> listener.afterInvocation(iInvokedMethod, iTestResult));
-        log.info(String.format("%s <> Cleaned up annotation based listeners!", this.toString()));
+        log.debug(String.format("%s <> Cleaned up annotation based listeners!", this.toString()), null);
 
     }
 
@@ -61,7 +64,7 @@ public class LoadListener extends GlobalListener {
         Collections.sort(globalListeners);
         globalListeners.forEach(listener -> {
             listener.before(iInvokedMethod, iTestResult);
-            log.info(String.format("%s <> loaded %s", this.toString(), listener.toString()));
+            log.debug(String.format("%s <> loaded %s", this.toString(), listener.toString()), null);
         });
     }
 
@@ -70,7 +73,7 @@ public class LoadListener extends GlobalListener {
         Collections.sort(annListeners);
         annListeners.forEach(listener -> {
             listener.beforeInvocation(iInvokedMethod, iTestResult);
-            log.info(String.format("%s <> loaded %s", this.toString(), listener.toString()));
+            log.debug(String.format("%s <> loaded %s", this.toString(), listener.toString()), null);
         });
     }
 
@@ -94,7 +97,7 @@ public class LoadListener extends GlobalListener {
                 }
             });
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error while loading listeners.", e);
             throw new SkipException(e.getMessage());
         }
         return listeners;
