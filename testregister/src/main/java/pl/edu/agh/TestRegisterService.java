@@ -31,7 +31,7 @@ public class TestRegisterService implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // TODO create fancy log4j config as in http://logging.apache.org/log4j/1.2/manual.html
         BasicConfigurator.configure();
-        receiver.register("test-exchange", System.out::println, "test.*", "test-pipe.info.*");
-        receiver.register("auth-exchange", SessionManager::addId, "auth.token.broadcast.*");
+        receiver.register("auth-exchange", SessionManager::addId, "auth.token.broadcast.login");
+        receiver.register("auth-exchange", SessionManager::deleteId, "auth.token.broadcast.logout");
     }
 }

@@ -25,10 +25,10 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(new AuthFilter(),  BasicAuthenticationFilter.class)
                 .authorizeRequests()
                 .anyRequest()
-                //.permitAll()
-                .fullyAuthenticated()
+                .permitAll()
+                //.authenticated()
                 .and()
-                .httpBasic().disable()
+                //.httpBasic().disable()
                 //.and()
             .csrf().disable();
     }

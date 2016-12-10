@@ -5,6 +5,7 @@ import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
@@ -35,13 +36,11 @@ public class MongoDBAuthenticationProvider extends AbstractUserDetailsAuthentica
     @Override
     protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         UserDetails loadedUser;
-
         try {
-
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String rawPassword = authentication.getCredentials().toString();
             pl.edu.agh.model.mongo.User usr = userMapper((Document) users.find(eq("login",username )).first());
-            if(!passwordEncoder.matches(rawPassword, usr.password())) throw new Exception("Wrong password");
+            if(!passwordEncoder.matches(rawPassword, usr.password())) throw new AuthenticationServiceException("Wrong password");
             loadedUser = new User(usr.login(), usr.password(), Arrays.asList(new SimpleGrantedAuthority("ROLE_" + usr.role())));
         } catch (Exception repositoryProblem) {
             throw new InternalAuthenticationServiceException(repositoryProblem.getMessage(), repositoryProblem);

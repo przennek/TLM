@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -27,15 +28,15 @@ public class AuthorizationEndpoint {
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping("/login-success")
-    public String auth(@AuthenticationPrincipal UserDetails userDetails) {
+    public String auth(@AuthenticationPrincipal UserDetails userDetails, @CookieValue(value = "auth-token", defaultValue = "") String authCookie) {
         Collection<SimpleGrantedAuthority> roles = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        String sessionid = RequestContextHolder.currentRequestAttributes().getSessionId();
-        sender.sendOverTopic("auth-exchange", "auth.token.broadcast.sessionid", "{sessionId: \""+sessionid +"\", role: \""+roles.toArray()[0].toString()+"\", username: \""+userDetails.getUsername()+"\"}");
+        sender.sendOverTopic("auth-exchange", "auth.token.broadcast.login", "{sessionId: \""+authCookie +"\", role: \""+roles.toArray()[0].toString()+"\", username: \""+userDetails.getUsername()+"\"}");
         return "{authorization: \"true\"}";
     }
 
     @RequestMapping("/logout-success")
-    public String logout() {
+    public String logout(@CookieValue(value = "auth-token", defaultValue = "") String authCookie) {
+        sender.sendOverTopic("auth-exchange", "auth.token.broadcast.logout", "{sessionId: \""+authCookie +"\"}");
         return "{logout: \"true\"}";
     }
 }

@@ -21,7 +21,8 @@ public class SessionManager {
         sessionIds.clear();
     }
 
-    public static void deleteId(String id) {
-        sessionIds.remove(id);
+    public static void deleteId(String json) {
+        JSONObject jsonObj = new JSONObject(json);
+        sessionIds.remove(jsonObj.getString("sessionId"));
     }
 }
