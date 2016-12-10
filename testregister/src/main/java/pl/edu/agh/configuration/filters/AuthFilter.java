@@ -2,7 +2,6 @@ package pl.edu.agh.configuration.filters;
 
 import pl.edu.agh.models.User;
 import pl.edu.agh.sessionmanager.SessionManager;
-import pl.edu.agh.utils.Utils;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -40,7 +39,6 @@ public class AuthFilter implements Filter {
                 sessionId = c.getValue();
         }
         User user = SessionManager.sessionIds.get(sessionId);
-        //String currentSessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
         if(user != null) {
             request.getSession().setAttribute("ROLE", user.role());
             request.getSession().setAttribute("USERNAME", user.login());
