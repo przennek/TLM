@@ -122,6 +122,11 @@
             <artifactId>amqp-client</artifactId>
             <version>RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>devtoolkit</groupId>
+            <artifactId>devtoolkit</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- end test -->
     </dependencies>
 </project>

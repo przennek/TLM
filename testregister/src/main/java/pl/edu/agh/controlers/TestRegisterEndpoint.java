@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pl.edu.agh.TestRegisterService;
+import pl.edu.agh.logger.TLMLogger;
 import pl.edu.agh.model.ws.TestClass;
 
 import java.io.IOException;
@@ -16,7 +18,7 @@ import java.io.IOException;
  */
 @Controller
 public class TestRegisterEndpoint {
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(TestRegisterEndpoint.class);
+    private static TLMLogger logger = TLMLogger.getLogger(TestRegisterEndpoint.class.getName());
 
     @RequestMapping(value = "/addtest/{testClass}", method = RequestMethod.POST)
     @ExceptionHandler(IOException.class)
@@ -26,7 +28,7 @@ public class TestRegisterEndpoint {
         try {
             return mapper.writeValueAsString(testClass);
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             throw e;
         }
     }
