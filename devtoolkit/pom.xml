@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>devtoolkit</groupId>
+    <groupId>pl.edu.agh.devtoolkit</groupId>
     <artifactId>devtoolkit</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
@@ -171,13 +171,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun</groupId>
-            <artifactId>tools</artifactId>
-            <version>1.8.0</version>
-            <scope>system</scope>
-            <systemPath>${toolsjar}</systemPath>
         </dependency>
         <dependency>
             <groupId>com.rabbitmq</groupId>

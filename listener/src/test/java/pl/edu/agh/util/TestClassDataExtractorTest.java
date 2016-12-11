@@ -4,7 +4,6 @@ package pl.edu.agh.util;
  * Created by Kamil on 01.11.2016.
  */
 
-import javafx.scene.image.Image;
 import org.testng.annotations.Test;
 import pl.edu.agh.annotated.annotations.TestType;
 import pl.edu.agh.model.ws.JavaDocTag;
