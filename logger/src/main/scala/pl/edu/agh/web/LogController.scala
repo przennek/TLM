@@ -1,5 +1,8 @@
 package pl.edu.agh.web
 
+import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.{RequestMapping, RequestMethod, RestController}
+
 @Controller
 @RequestMapping(Array("/logs"))
 class LogController () {

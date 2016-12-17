@@ -11,3 +11,4 @@ build/
 *.iml
 *.iws
 *.ipr
+src/main/resources/static/node_modules

@@ -6,5 +6,5 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Controller
 class RootController {
   @RequestMapping(Array("/"))
-  def handleRootRequest(): String = "redirect:/tlm"
+  def handleRootRequest(): String = "redirect:/#"
 }
