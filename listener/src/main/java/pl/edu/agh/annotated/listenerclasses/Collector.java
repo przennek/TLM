@@ -1,18 +1,33 @@
 package pl.edu.agh.annotated.listenerclasses;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 import org.testng.IInvokedMethod;
 import org.testng.ITestResult;
 import pl.edu.agh.annotated.annotations.TestType;
 import pl.edu.agh.exceptions.TestClassDataParseException;
 import pl.edu.agh.exceptions.TokenCouldNotBeParsedException;
 import pl.edu.agh.globals.PriorityAwareListener;
+import pl.edu.agh.globals.listenerclasses.TLMConnectionListener;
 import pl.edu.agh.logger.TLMLogger;
 import pl.edu.agh.model.ws.TestClass;
 import pl.edu.agh.util.FileHelper;
 import pl.edu.agh.util.ListenerHelper;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+import java.util.stream.Collectors;
 
 import static pl.edu.agh.util.TestClassDataExtractor.extractData;
 
@@ -72,6 +87,34 @@ public class Collector extends PriorityAwareListener {
 
     // TODO fill up
     private Boolean isTestInDB(String token) {
+        try {
+            Properties properties = FileHelper.get().getTlmProperties();
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpPost postRequest = new HttpPost(
+                            String.format("http://%s:%s/testregister/isTestInDb/",
+                                    properties.getProperty("gate"),
+                                    properties.getProperty("port")
+                            )
+            );
+
+            postRequest.setHeader(new BasicHeader("Cookie: auth-token", TLMConnectionListener.sessionId));
+
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            nvps.add(new BasicNameValuePair("testFileId", token));
+            postRequest.setEntity(new UrlEncodedFormEntity(nvps));
+
+            HttpResponse response = httpClient.execute(postRequest);
+
+            String line;
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            System.out.println("______________________________________________________________");
+            while ((line = bufferedReader.readLine()) != null) {
+                System.out.println(line);
+            }
+            System.out.println("______________________________________________________________");
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
         return false;
     }
 

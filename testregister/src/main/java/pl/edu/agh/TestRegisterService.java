@@ -36,6 +36,7 @@ public class TestRegisterService implements CommandLineRunner {
         BasicConfigurator.configure();
         logger.info("Test register service is running.", null);
         receiver.register("auth-exchange", SessionManager::addId, "auth.token.broadcast.login");
+        receiver.register("auth-exchange", System.out::println, "auth.token.broadcast.login");
         receiver.register("auth-exchange", SessionManager::deleteId, "auth.token.broadcast.logout");
     }
 }

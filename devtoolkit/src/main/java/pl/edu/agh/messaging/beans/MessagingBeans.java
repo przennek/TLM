@@ -14,12 +14,12 @@ public class MessagingBeans {
     @Bean
     @Qualifier("localhost")
     public Sender sender() {
-        return new Sender("localhost");
+        return new Sender("rabbitmq-service.default.svc.cluster.local");
     }
 
     @Bean
     @Qualifier("localhost")
     public Receiver receiver() {
-        return new Receiver("localhost");
+        return new Receiver("rabbitmq-service.default.svc.cluster.local");
     }
 }

@@ -75,7 +75,15 @@ public class FileHelper {
     }
 
     public String getTestPackagePath() throws IOException {
-        // read test path from properties
+        Properties properties = getTlmProperties();
+        try {
+            return properties.getProperty("testpackagepath").replaceAll("\"", "");
+        } catch (NullPointerException npe) {
+            throw new TLMPropertiesNotFoundException("testpackagepath property not found! Make sure it's in tlm.properties file!");
+        }
+    }
+
+    public Properties getTlmProperties() throws IOException {
         Properties properties = new Properties();
         try {
             properties.load(new FileInputStream(PROPERTIES_PATH.toString().replaceAll("file:/", "/")));
@@ -84,13 +92,7 @@ public class FileHelper {
             log.error(e.getMessage(), e);
             throw e;
         }
-
-        // absolute path to test case
-        try {
-            return properties.getProperty("testpackagepath").replaceAll("\"", "");
-        } catch (NullPointerException npe) {
-            throw new TLMPropertiesNotFoundException("testpackagepath property not found! Make sure it's in tlm.properties file!");
-        }
+        return properties;
     }
 
     public String getToken(Path path) throws TokenCouldNotBeParsedException {

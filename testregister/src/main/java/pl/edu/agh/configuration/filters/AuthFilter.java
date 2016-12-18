@@ -29,15 +29,10 @@ public class AuthFilter implements Filter {
         if(cookie == null ) cookie = "";
         Map<String, String> headers = new HashMap<>();
         Arrays.stream(cookie.split(";")).forEach(el -> {
-            String[] t = el.split("=");
-            headers.put(t[0], t[1]);
+            String[] t = el.contains("=") ? el.split("=") : el.split(":");
+            headers.put(t[0].trim(), t[1].trim());
          });
-        Cookie[] cookies = ((HttpServletRequest) req).getCookies();
-        String sessionId = "";
-        for (Cookie c : cookies) {
-            if (c.getName().equals("auth-token"))
-                sessionId = c.getValue();
-        }
+        String sessionId = headers.get("auth-token");
         User user = SessionManager.sessionIds.get(sessionId);
         if(user != null) {
             request.getSession().setAttribute("ROLE", user.role());
