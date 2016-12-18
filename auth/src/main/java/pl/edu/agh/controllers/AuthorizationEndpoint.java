@@ -34,4 +34,9 @@ public class AuthorizationEndpoint {
         sender.sendOverTopic("auth-exchange", "auth.token.broadcast.logout", "{sessionId: \""+authCookie +"\"}");
         return "{logout: \"true\"}";
     }
+
+    @RequestMapping("/sessionStatus")
+    public String status(@CookieValue(value = "auth-token", defaultValue = "") String authCookie) {
+        return "{authorization: \"true\"}";
+    }
 }

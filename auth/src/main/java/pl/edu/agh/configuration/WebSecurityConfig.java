@@ -40,6 +40,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/logout-success").permitAll()
                 .antMatchers("/login-failed").permitAll()
+                .antMatchers("/sessionStatus").permitAll()
                 .anyRequest().authenticated()
             .and()
                 .formLogin()

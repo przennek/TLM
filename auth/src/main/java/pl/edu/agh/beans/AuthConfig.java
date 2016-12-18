@@ -21,7 +21,7 @@ public class AuthConfig {
 
     @Bean
     public MongoDatabase database() {
-        final String host = "localhost";
+        final String host = "mongo.default.svc.cluster.local";
         final String port = "27017";
         final String dbName = "test";
 
