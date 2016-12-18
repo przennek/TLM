@@ -6,6 +6,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import pl.edu.agh.logger.TLMLogger;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -21,20 +22,28 @@ public class Sender {
     }
 
     public void sendOverTopic(String exchangeName, String routingKey, String msg) {
+        Optional<Connection> connection = Optional.empty();
         try {
             ConnectionFactory factory = new ConnectionFactory();
             factory.setHost(host);
-            Connection connection = factory.newConnection();
-            Channel channel = connection.createChannel();
+            connection = Optional.of(factory.newConnection());
+            Channel channel = connection.get().createChannel();
             channel.exchangeDeclare(exchangeName, "topic");
             channel.basicPublish(exchangeName, routingKey, null, msg.getBytes());
-            connection.close();
         } catch (IOException | TimeoutException e) {
             if (wasLogged) {
                 logger.logger().error(e.getMessage(), e);
                 wasLogged = true;
             } else {
                 logger.error(e.getMessage(), e);
+            }
+        } finally {
+            if(connection.isPresent()) {
+                try {
+                    connection.get().close();
+                } catch (IOException e) {
+                    logger.error(e.getMessage(), e);
+                }
             }
         }
     }

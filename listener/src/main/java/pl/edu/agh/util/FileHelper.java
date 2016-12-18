@@ -71,6 +71,10 @@ public class FileHelper {
     }
 
     public Path preparePath(ITestNGMethod method) throws IOException {
+        return Paths.get(getTestPackagePath() + "/" + method.getTestClass().toString().replaceAll("\\.", "/").replaceAll("]", "").split(" ")[2] + ".java");
+    }
+
+    public String getTestPackagePath() throws IOException {
         // read test path from properties
         Properties properties = new Properties();
         try {
@@ -83,8 +87,7 @@ public class FileHelper {
 
         // absolute path to test case
         try {
-            String packagePath = properties.getProperty("testpackagepath").replaceAll("\"", "");
-            return Paths.get(packagePath + "/" + method.getTestClass().toString().replaceAll("\\.", "/").replaceAll("]", "").split(" ")[2] + ".java");
+            return properties.getProperty("testpackagepath").replaceAll("\"", "");
         } catch (NullPointerException npe) {
             throw new TLMPropertiesNotFoundException("testpackagepath property not found! Make sure it's in tlm.properties file!");
         }
