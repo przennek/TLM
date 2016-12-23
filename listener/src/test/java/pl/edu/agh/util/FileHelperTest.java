@@ -30,7 +30,7 @@ public class FileHelperTest {
 
     @BeforeMethod
     public void prepareFile() throws IOException {
-        testFile = new File("src/resources/tmp_test.file");
+        testFile = new File("src/main/resources/tmp_test.file");
         testFile.createNewFile();
         path = testFile.toPath();
     }

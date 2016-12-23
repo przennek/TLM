@@ -29,7 +29,7 @@ public class TestRegisterEndpoint {
         }
     }
 
-    @RequestMapping(value = "/isTestInDb", method = RequestMethod.POST)
+    @RequestMapping(value = "/isTestInDb/", method = RequestMethod.POST)
     @ExceptionHandler(IOException.class)
     public String isTestInDB(String testFileId) {
         return String.format("{\"test\": \"%s\", \"isInDB\": false}", testFileId);

@@ -33,12 +33,12 @@ public class FileHelper {
 
     private FileHelper() throws TLMPropertiesNotFoundException {
         try {
-            if (Files.exists(Paths.get("src/resources/tlm.properties"))) {
-                PROPERTIES_PATH = new File("src/resources/tlm.properties").toURI().toURL();
+            if (Files.exists(Paths.get("src/main/resources/tlm.properties"))) {
+                PROPERTIES_PATH = new File("src/main/resources/tlm.properties").toURI().toURL();
             } else if (Files.exists(Paths.get("src/main/resources/tlm.properties"))) {
                 PROPERTIES_PATH = new File("src/main/resources/tlm.properties").toURI().toURL();
             } else {
-                final String message = "Create tlm.properties file under: src/main/resources/ or src/resources";
+                final String message = "Create tlm.properties file under: src/main/resources/ or src/main/resources";
                 throw new TLMPropertiesNotFoundException(message);
             }
         } catch (MalformedURLException e) {

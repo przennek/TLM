@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
  * Created by Przemek on 16.10.2016.
  */
 
-// TODO create connection with TLM
 public class TLMConnectionListener extends GlobalListener {
     // TODO move this scratch to designated encrypted session file.
     public static String sessionId;
