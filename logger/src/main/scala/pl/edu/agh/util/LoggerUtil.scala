@@ -19,7 +19,6 @@ class LoggerUtil {
 }
 
 object LoggerUtil {
-  val restClient = RestClient.builder(new HttpHost("localhost", 9200, "http")).build()
 
   def appendLog(line: String): Unit = {
     val json = Json.parse(line)
@@ -32,6 +31,8 @@ object LoggerUtil {
   }
 
   def logInElastic(className: String, level: String, message: String, date: String): Unit = {
+    val restClient = RestClient.builder(new HttpHost("localhost", 9200, "http")).build()
+
     val entry = "{\n\"className\" : \"" + className+
       "\",\n\"date\" : \"" +date+
       "\",\n\"level\" : \""+level+
@@ -42,6 +43,8 @@ object LoggerUtil {
     val entity = new NStringEntity(entry, ContentType.APPLICATION_JSON)
     val map = Collections.emptyMap[String, String]
     val indexResponse = restClient.performRequest(
-      "PUT", "/log", map, entity)
+      "POST", s"/log/$level", map, entity)
+
+    restClient.close()
   }
 }
