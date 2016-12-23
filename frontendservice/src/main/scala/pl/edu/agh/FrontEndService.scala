@@ -27,6 +27,5 @@ class FrontEndService () {
   logger.info("Test register service is running.", null)
   val receiver: Receiver = new Receiver("localhost")
   receiver.register("auth-exchange", SessionManager.addId, "auth.token.broadcast.login")
-  receiver.register("auth-exchange", println, "auth.token.broadcast.login")
   receiver.register("auth-exchange", SessionManager.deleteId, "auth.token.broadcast.logout")
 }
