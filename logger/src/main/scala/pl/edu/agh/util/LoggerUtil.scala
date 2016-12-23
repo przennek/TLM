@@ -33,15 +33,15 @@ object LoggerUtil {
 
   def logInElastic(className: String, level: String, message: String, date: String): Unit = {
     val entry = "{\n\"className\" : \"" + className+
-      ",\n\"date\" : \"" +date+
+      "\",\n\"date\" : \"" +date+
       "\",\n\"level\" : \""+level+
       "\",\n\"message\" : \""+message+ "\"\n}"
 
     println(entry)
 
     val entity = new NStringEntity(entry, ContentType.APPLICATION_JSON)
-    val map = new util.HashMap[String, String]
+    val map = Collections.emptyMap[String, String]
     val indexResponse = restClient.performRequest(
-      "PUT", s"/log/$level", map, entity)
+      "PUT", "/log", map, entity)
   }
 }
