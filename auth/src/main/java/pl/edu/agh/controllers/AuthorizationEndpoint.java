@@ -6,9 +6,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import pl.edu.agh.messaging.Sender;
 
 import java.util.Collection;
@@ -16,7 +16,7 @@ import java.util.Collection;
 /**
  * Created by Przemek on 21.11.2016.
  */
-@RestController
+@Controller
 public class AuthorizationEndpoint {
     @Autowired
     Sender sender;
@@ -33,10 +33,5 @@ public class AuthorizationEndpoint {
     public String logout(@CookieValue(value = "auth-token", defaultValue = "") String authCookie) {
         sender.sendOverTopic("auth-exchange", "auth.token.broadcast.logout", "{sessionId: \""+authCookie +"\"}");
         return "{logout: \"true\"}";
-    }
-
-    @RequestMapping("/sessionStatus")
-    public String status(@CookieValue(value = "auth-token", defaultValue = "") String authCookie) {
-        return "{authorization: \"true\"}";
     }
 }

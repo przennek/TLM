@@ -17,7 +17,7 @@ public class FileMarker extends PriorityAwareListener {
     private static TLMLogger log = TLMLogger.getLogger(FileMarker.class.getName());
 
     public FileMarker() {
-        super(100);
+        super(101);
     }
 
     @Override

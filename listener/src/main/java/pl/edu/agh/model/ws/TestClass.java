@@ -17,6 +17,7 @@ import java.util.List;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class TestClass {
     private String tokenId;
+    private String testType;
     private String className;
     private String classComment;
     private List<JavaDocTag> classTags;

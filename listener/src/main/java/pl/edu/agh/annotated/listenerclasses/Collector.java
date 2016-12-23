@@ -1,5 +1,6 @@
 package pl.edu.agh.annotated.listenerclasses;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -24,10 +25,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 import static pl.edu.agh.util.TestClassDataExtractor.extractData;
 
@@ -59,7 +59,9 @@ public class Collector extends PriorityAwareListener {
                     }
                     if (!isTestInDB(token)) {
                         TestClass testClass = new TestClass()
-                                .tokenId(token);
+                                .tokenId(token)
+                                .testType(ListenerHelper.getAnnotationValue(iInvokedMethod, TestType.class));
+
                         try {
                             extractData(testClass, iInvokedMethod, path);
                         } catch (TestClassDataParseException e) {
@@ -80,24 +82,30 @@ public class Collector extends PriorityAwareListener {
         }
     }
 
-    // TODO make an endpoint call
     private Boolean register(TestClass testClass) {
-        return false;
+        ObjectMapper mapper = new ObjectMapper();
+        try (DefaultHttpClient httpClient = new DefaultHttpClient()) {
+            HttpPost postRequest = ListenerHelper.prepareRequest("addTest");
+
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            nvps.add(new BasicNameValuePair("testClass", mapper.writeValueAsString(testClass)));
+            postRequest.setEntity(new UrlEncodedFormEntity(nvps));
+
+            HttpResponse response = httpClient.execute(postRequest);
+
+            String json = new BufferedReader(new InputStreamReader(
+                    response.getEntity().getContent())).readLine();
+
+            return (Boolean) new ObjectMapper().readValue(json, HashMap.class).get("added");
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            return false;
+        }
     }
 
-    // TODO fill up
     private Boolean isTestInDB(String token) {
-        try {
-            Properties properties = FileHelper.get().getTlmProperties();
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpPost postRequest = new HttpPost(
-                            String.format("http://%s:%s/testregister/isTestInDb/",
-                                    properties.getProperty("gate"),
-                                    properties.getProperty("port")
-                            )
-            );
-
-            postRequest.setHeader(new BasicHeader("Cookie: auth-token", TLMConnectionListener.sessionId));
+        try (DefaultHttpClient httpClient = new DefaultHttpClient()) {
+            HttpPost postRequest = ListenerHelper.prepareRequest("isTestInDb");
 
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
             nvps.add(new BasicNameValuePair("testFileId", token));
@@ -105,13 +113,10 @@ public class Collector extends PriorityAwareListener {
 
             HttpResponse response = httpClient.execute(postRequest);
 
-            String line;
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            System.out.println("______________________________________________________________");
-            while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
-            }
-            System.out.println("______________________________________________________________");
+            String json = new BufferedReader(new InputStreamReader(
+                                     response.getEntity().getContent())).readLine();
+
+            return (Boolean) new ObjectMapper().readValue(json, HashMap.class).get("isInDB");
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
