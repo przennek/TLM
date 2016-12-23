@@ -34,6 +34,13 @@ repositories {
     maven { url "https://repo.spring.io/milestone" }
 }
 
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Camden.SR3'
+    }
+}
+
+
 dependencies {
     compile("pl.edu.agh.devtoolkit:devtoolkit:0.0.1-SNAPSHOT") {
         exclude group: "org.springframework"
@@ -41,6 +48,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile 'org.springframework.boot:spring-boot-starter-security'
     compile("org.thymeleaf:thymeleaf-spring4")
     compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
     compile("org.hibernate:hibernate-validator")
@@ -48,8 +56,13 @@ dependencies {
     compile("org.hsqldb:hsqldb")
     compile("org.scala-lang:scala-library:2.12.0")
     compile("org.webjars:bootstrap:3.1.1")
+    compile 'org.springframework.cloud:spring-cloud-starter-config'
+    compile 'org.springframework.cloud:spring-cloud-starter-eureka'
     testCompile("junit:junit")
 }
+
+
+
 
 configurations {
     compile.exclude group: 'excludeMark'
