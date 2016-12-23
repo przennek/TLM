@@ -34,7 +34,7 @@ class TLMLogger (val tyPe: String, val sender: Sender, val exchange_name: String
       sender.sendOverTopic(exchange_name, s"log.$level", json)
     } catch {
       case e: NullPointerException =>
-        sender.sendOverTopic(exchange_name, s"log.$level", String.format("{class: \"%s\", level: \"%s\", msg: \"%s\"}", tyPe, level, msg))
+        sender.sendOverTopic(exchange_name, s"log.$level", String.format("{\"className\": \"%s\", \"level\": \"%s\", \"msg\": \"%s\"}", tyPe, level, msg))
     }
   }
 }

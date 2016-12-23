@@ -47,6 +47,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile 'org.springframework.boot:spring-boot-starter-security'
     compile("org.thymeleaf:thymeleaf-spring4")
     compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
     compile("org.hibernate:hibernate-validator")
@@ -55,8 +56,10 @@ dependencies {
     compile("org.scala-lang:scala-library:2.12.0")
     compile("org.webjars:bootstrap:3.1.1")
     testCompile("junit:junit")
+    compile group: 'com.typesafe.play', name: 'play-json_2.12', version: '2.6.0-M1'
     compile 'org.springframework.cloud:spring-cloud-starter-config'
     compile 'org.springframework.cloud:spring-cloud-starter-eureka'
+    compile 'org.elasticsearch.client:rest:5.1.1'
 }
 
 configurations {
