@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pl.edu.agh.messaging.Sender;
 
 import java.util.Collection;
@@ -16,7 +17,7 @@ import java.util.Collection;
 /**
  * Created by Przemek on 21.11.2016.
  */
-@Controller
+@RestController
 public class AuthorizationEndpoint {
     @Autowired
     Sender sender;
