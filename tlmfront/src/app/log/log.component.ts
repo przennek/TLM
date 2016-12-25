@@ -33,7 +33,17 @@ export class LogComponent implements OnInit {
     }
 
     promise.subscribe(data => {
-      this.logs = data.text();
+      if(data.text() === "NOTHING FOUND") {
+        this.logs = data.text();
+      } else {
+        let obj = JSON.parse(data.text());
+        this.logs = "";
+
+        for (var i = 0; i < obj.length; i++) {
+          this.logs += obj[i]._source.date + "  "
+            + obj[i]._source.level  + " --- " + "[" + obj[i]._source.className + "] " + obj[i]._source.message + "\n";
+        }
+      }
     }, error => {
       console.log(JSON.stringify(error.json()));
     });
