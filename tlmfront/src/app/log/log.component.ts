@@ -53,7 +53,7 @@ export class LogComponent implements OnInit {
 
         for (var i = 0; i < obj.length; i++) {
           this.logs += obj[i]._source.date + "  "
-            + obj[i]._source.level  + " --- " + "[" + obj[i]._source.className + "] " + obj[i]._source.message + "\n";
+            + obj[i]._source.level  + " --- " + "[" + obj[i]._source.className + "] " + obj[i]._source.message + "<br/>";
         }
       }
     }, error => {
