@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {AppComponent} from "../app.component";
 import {LogService} from "./log.service";
+import {CookieService} from 'angular2-cookie/core';
+import {LoginService} from "../login/login.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-log',
   templateUrl: './log.component.html',
   styleUrls: ['./log.component.css'],
-  providers: [LogService]
+  providers: [LogService, CookieService, LoginService]
 })
 export class LogComponent implements OnInit {
   disabled: boolean;
@@ -15,12 +18,21 @@ export class LogComponent implements OnInit {
   phrase: String;
 
   constructor(
-    private logService: LogService,
+    private loginService: LoginService,
+    private router: Router,
+    private logService: LogService
   ) { }
 
   ngOnInit() {
+    this.redirectIfNeeded();
     this.level = "FULLTEXT";
     this.logs = "Execute your query to get me started";
+  }
+
+  redirectIfNeeded() {
+    if (this.loginService.getSessionStatus()) {
+      this.router.navigateByUrl('login');
+    }
   }
 
   search(): void {

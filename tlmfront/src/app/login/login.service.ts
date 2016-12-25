@@ -1,14 +1,45 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Inject} from '@angular/core';
 import {AppComponent} from "../app.component";
+import {Headers, Http} from "@angular/http";
+import {CookieService} from 'angular2-cookie/core';
 
 @Injectable()
 export class LoginService {
-  getSessionStatus(): boolean {
-    console.log(AppComponent.token)
-    return AppComponent.token === undefined ? false : true;
+  constructor(
+    private http: Http,
+    @Inject(CookieService) private cookieService: CookieService
+  ) {
+    this.http = http;
   }
 
-  login(uname: String, passwd: String): void {
-    AppComponent.token = "TOKEN"
+  getSessionStatus(): boolean {
+    return this.cookieService.get("auth-token") === undefined
+  }
+
+  login(uname: String, passwd: String) {
+    var body = 'login='+ uname+ '&' + 'password=' + passwd;
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+    return this.http
+      .post('http://localhost:8080/auth/login',
+        body, {
+          headers: headers,
+          withCredentials: true
+        });
+  }
+
+  authorise(token: string) {
+    var body = '';
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('auth-token', token);
+
+    return this.http
+      .post('http://localhost:8080/auth/login-success',
+        body, {
+          headers: headers,
+          withCredentials: true
+        });
   }
 }

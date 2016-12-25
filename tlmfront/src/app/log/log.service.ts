@@ -1,9 +1,13 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Inject} from "@angular/core";
 import {Headers, Http} from "@angular/http";
+import {CookieService} from "angular2-cookie/core";
 
 @Injectable()
 export class LogService {
-  constructor(private http: Http) {
+  constructor(
+    private http: Http,
+  @Inject(CookieService) private cookieService: CookieService
+  ) {
     this.http = http;
   }
 
@@ -11,6 +15,7 @@ export class LogService {
     var body = 'msg=' + msg;
     var headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('auth-token', this.cookieService.get("auth-token"));
     return this.http
       .post('http://localhost:8080/logservice/logs/getContainingMessage',
         body, {
@@ -22,6 +27,7 @@ export class LogService {
     var body = 'level=' + level;
     var headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('auth-token', this.cookieService.get("auth-token"));
     return this.http.post('http://localhost:8080/logservice/logs/getAllByLevel',
         body, {
           headers: headers
