@@ -10,6 +10,7 @@ import {LogService} from "./log.service";
 })
 export class LogComponent implements OnInit {
   disabled: boolean;
+  logs: String;
   level: String;
   phrase: String;
 
@@ -19,6 +20,7 @@ export class LogComponent implements OnInit {
 
   ngOnInit() {
     this.level = "FULLTEXT";
+    this.logs = "Execute your query to get me started";
   }
 
   search(): void {
@@ -31,7 +33,7 @@ export class LogComponent implements OnInit {
     }
 
     promise.subscribe(data => {
-      console.log(data.text());
+      this.logs = data.text();
     }, error => {
       console.log(JSON.stringify(error.json()));
     });
