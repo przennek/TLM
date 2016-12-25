@@ -15,7 +15,6 @@ class LogController() {
   val TIMEOUT: Int = 10000;
 
   @RestController
-  @CrossOrigin(origins = Array("http://localhost:4200"))
   @RequestMapping(Array("/getAllByLevel"))
   def level(level: String): String = {
     try {
@@ -34,7 +33,6 @@ class LogController() {
   }
 
   @RestController
-  @CrossOrigin(origins = Array("http://localhost:4200"))
   @RequestMapping(Array("/getContainingMessage"))
   def contains(msg: String): String = {
     try {
