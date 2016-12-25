@@ -1,4 +1,24 @@
-<h1>
-  {{title}}
-  <router-outlet></router-outlet>
-</h1>
+<!--header-->
+<nav class="navbar navbar-default navbar-inverse">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="#">TLM</a>
+  </div>
+</nav>
+<!--/header-->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <app-navbar></app-navbar>
+    </div>
+    <div class="col-md-10">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+<!-- footer -->
+<footer class="footer">
+  <div class="container">
+    <p class="text-muted">Test lifecycle management</p>
+  </div>
+</footer>
+<!-- /footer -->

@@ -1,9 +1,21 @@
-<div class="container">
-  <label><b>Username</b></label>
-  <input type="text" placeholder="Enter Username" [(ngModel)]="lgn" required><br/>
-
-  <label><b>Password</b></label>
-  <input type="password" placeholder="Enter Password"[(ngModel)]="psw" required>
-
-  <button (click)="applyLogin()">Login</button>
+<div class="row">
+  <div class="row">
+    <div class="col-md-1">
+      <label><b>Username</b></label>
+    </div>
+    <div class="col-md-11">
+      <input type="text" placeholder="Enter Username" [(ngModel)]="lgn" required>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-1">
+      <label><b>Password</b></label>
+    </div>
+    <div class="col-md-11">
+      <input type="password" placeholder="Enter Password" [(ngModel)]="psw" required>
+    </div>
+  </div>
+  <div class="row">
+    <button (click)="applyLogin()">Login</button>
+  </div>
 </div>

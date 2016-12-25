@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="row">
+    <div class="col-md-12">
+      <select [(ngModel)]="level" (click)="select()">
+        <option value="FULLTEXT">full text search</option>
+        <option value="INFO">all in info level</option>
+        <option value="WARN">all in warn level</option>
+        <option value="DEBUG">all in debug level</option>
+        <option value="TRACE">all in trace level</option>
+        <option value="FATAL">all in fatal level</option>
+        <option value="ERROR">all in error level</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <input type="text" placeholder="Enter phrase" [(ngModel)]="phrase" [disabled]="disabled">
+      <button (click)="search()">Search</button>
+    </div>
+  </div>
+</div>
+<div class="row"><p></p></div>
+<div class="row">
+  <div class="panel panel-default col-md-10">
+    <div class="panel-body">
+      Basic panel example
+    </div>
+  </div>
+  <div class="col-md-2"></div>
+</div>
