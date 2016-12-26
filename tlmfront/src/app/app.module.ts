@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LogComponent } from './log/log.component';
+import { ModuledetailComponent } from './moduledetail/moduledetail.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { LogComponent } from './log/log.component';
     LoginComponent,
     DashboardComponent,
     NavbarComponent,
-    LogComponent
+    LogComponent,
+    ModuledetailComponent
   ],
   imports: [
     BrowserModule,

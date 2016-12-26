@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
           console.log(JSON.stringify(error.json()));
         });
     }, error => {
-      console.log(JSON.stringify(error.json()));
+      alert("Zły login lub hasło.")
     });
   }
 

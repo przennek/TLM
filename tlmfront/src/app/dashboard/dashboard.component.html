@@ -1,1 +1,9 @@
-<p>Dashboard works!</p>
+<p>Available modules:</p>
+<ul>
+  <li *ngFor="let module of moduleList"
+      [class.selected]="module === selectedModule"
+      (click)="onClick(module)">
+    {{module}}
+  </li>
+</ul>
+<app-moduledetail [class.hidden]="selectedModule === null" [module]="selectedModule"></app-moduledetail>
