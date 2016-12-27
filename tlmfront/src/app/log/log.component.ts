@@ -4,6 +4,7 @@ import {LogService} from "./log.service";
 import {CookieService} from 'angular2-cookie/core';
 import {LoginService} from "../login/login.service";
 import {Router} from "@angular/router";
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-log',

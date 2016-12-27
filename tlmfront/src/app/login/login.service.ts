@@ -1,7 +1,8 @@
 import {Injectable, Inject} from '@angular/core';
 import {AppComponent} from "../app.component";
-import {Headers, Http} from "@angular/http";
+import {Headers, Http, Response} from "@angular/http";
 import {CookieService} from 'angular2-cookie/core';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class LoginService {
