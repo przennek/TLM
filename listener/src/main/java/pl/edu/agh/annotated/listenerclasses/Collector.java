@@ -20,6 +20,8 @@ import pl.edu.agh.model.ws.TestClass;
 import pl.edu.agh.util.FileHelper;
 import pl.edu.agh.util.ListenerHelper;
 
+import javax.annotation.Resource;
+import javax.naming.NamingException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -57,16 +59,21 @@ public class Collector extends PriorityAwareListener {
                         log.error("Error while reading token from test file, does your OS support TLM?", null);
                         throw new TokenCouldNotBeParsedException();
                     }
-                    if (!isTestInDB(token)) {
-                        TestClass testClass = new TestClass()
-                                .tokenId(token)
-                                .testType(ListenerHelper.getAnnotationValue(iInvokedMethod, TestType.class));
+                    String moduleName  =  FileHelper.get().getTlmProperties().getProperty("moduleName");
 
-                        try {
-                            extractData(testClass, iInvokedMethod, path);
-                        } catch (TestClassDataParseException e) {
-                            log.error("Critical error during parsing test data from file: " + path.toString(), e);
-                        }
+                    TestClass testClass = new TestClass()
+                            .tokenId(token)
+                            .testType(ListenerHelper.getAnnotationValue(iInvokedMethod, TestType.class))
+                            .moduleName(moduleName);
+
+                    try {
+                        extractData(testClass, iInvokedMethod, path);
+                    } catch (TestClassDataParseException e) {
+                        log.error("Critical error during parsing test data from file: " + path.toString(), e);
+                    }
+
+                    if (!isTestInDB(testClass)) {
+
                         // register test
                         if (!register(testClass)) {
                             log.error("Failed to register token: " + token + ", on file: " + path.toString(), null);
@@ -84,6 +91,7 @@ public class Collector extends PriorityAwareListener {
 
     private Boolean register(TestClass testClass) {
         ObjectMapper mapper = new ObjectMapper();
+
         try (DefaultHttpClient httpClient = new DefaultHttpClient()) {
             HttpPost postRequest = ListenerHelper.prepareRequest("addTest");
 
@@ -103,12 +111,14 @@ public class Collector extends PriorityAwareListener {
         }
     }
 
-    private Boolean isTestInDB(String token) {
+    private Boolean isTestInDB(TestClass testClass) {
+        ObjectMapper mapper = new ObjectMapper();
+
         try (DefaultHttpClient httpClient = new DefaultHttpClient()) {
             HttpPost postRequest = ListenerHelper.prepareRequest("isTestInDb");
 
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-            nvps.add(new BasicNameValuePair("testFileId", token));
+            nvps.add(new BasicNameValuePair("testClass",  mapper.writeValueAsString(testClass) ));
             postRequest.setEntity(new UrlEncodedFormEntity(nvps));
 
             HttpResponse response = httpClient.execute(postRequest);

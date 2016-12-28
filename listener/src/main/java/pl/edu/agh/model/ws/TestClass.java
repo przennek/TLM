@@ -19,6 +19,7 @@ public class TestClass {
     private String tokenId;
     private String testType;
     private String className;
+    private String moduleName;
     private String classComment;
     private List<JavaDocTag> classTags;
     private List<TestMethod> testMethods;

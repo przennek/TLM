@@ -1,4 +1,4 @@
-package pl.edu.agh.annotated.listenerclasses;
+package pl.edu.agh.globals.listenerclasses;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
