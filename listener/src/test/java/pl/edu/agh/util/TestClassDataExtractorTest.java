@@ -47,7 +47,6 @@ public class TestClassDataExtractorTest {
 
         //then
         assertEquals(className, TestClassDataExtractorTest.class.getName());
-        assertTrue(false);
     }
 
     @Test
