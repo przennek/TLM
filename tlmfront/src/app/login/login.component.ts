@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
 
   applyRegister() {
     if (!this.register) {
-      this.shouldMessageBeVisible = false;
+      this.shouldMessageBeVisible = true;
       this.register = true;
     } else {
       this.shouldMessageBeVisible = true;
