@@ -2,6 +2,8 @@
   <div class="col-md-4"></div>
   <div class="col-md-4">
     <h2>Welcome to TLM</h2>
+    <h1 *ngIf="shouldMessageBeVisible"></h1>
+    <div *ngIf="shouldMessageBeVisible" class="alert alert-info" role="alert">{{ message }}</div>
     <div class="input-group">
       <span class="input-group-addon">&gt;</span>
       <input class="form-control" type="text" placeholder="Enter Username" [(ngModel)]="lgn" required>
@@ -10,10 +12,18 @@
       <span class="input-group-addon">&gt;</span>
       <input class="form-control" type="password" placeholder="Enter Password" [(ngModel)]="psw" required>
     </div>
+    <div *ngIf="register" class="input-group">
+      <span class="input-group-addon">&gt;</span>
+      <input class="form-control" type="password" placeholder="Validate Password" [(ngModel)]="validatePsw" required>
+    </div>
+    <div *ngIf="register" class="input-group">
+      <span class="input-group-addon">&gt;</span>
+      <input class="form-control" type="text" placeholder="Enter Email" [(ngModel)]="email" required>
+    </div>
     <p></p>
     <div class="btn-group" role="group" style="width:100%">
       <button (click)="applyLogin()" class="btn btn-primary btn-lg" href="#" role="button" style="width:25%">login</button>
-      <button (click)="applyLogin()" class="btn btn-primary btn-lg btn-danger" href="#" role="button" style="width:75%">register</button>
+      <button (click)="applyRegister()" class="btn btn-primary btn-lg btn-danger" href="#" role="button" style="width:75%">register</button>
     </div>
   </div>
   <div class="col-md-4"></div>

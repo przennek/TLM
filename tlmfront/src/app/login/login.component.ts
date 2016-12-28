@@ -17,9 +17,19 @@ export class LoginComponent implements OnInit {
 
   lgn: String;
   psw: String;
+  validatePsw: String;
+  email: String;
+
+  message: String;
+  shouldMessageBeVisible: boolean;
+
+  register: boolean;
 
   ngOnInit() {
     this.redirectIfNeeded();
+    this.register = false;
+    this.shouldMessageBeVisible = false;
+    this.message = "Additional action is required to register";
   }
 
   applyLogin(): void {
@@ -33,13 +43,24 @@ export class LoginComponent implements OnInit {
           console.log(JSON.stringify(error.json()));
         });
     }, error => {
-      alert("Zły login lub hasło.")
+      this.shouldMessageBeVisible = true;
+      this.message = "Wrong login or password.";
     });
   }
 
   redirectIfNeeded() {
     if (!this.loginService.getSessionStatus()) {
       this.router.navigateByUrl('dashboard');
+    }
+  }
+
+  applyRegister() {
+    if (!this.register) {
+      this.shouldMessageBeVisible = false;
+      this.register = true;
+    } else {
+      this.shouldMessageBeVisible = true;
+      this.message = "Your request is pending for approval.";
     }
   }
 }
