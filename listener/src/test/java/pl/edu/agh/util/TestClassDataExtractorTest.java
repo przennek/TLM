@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.testng.Assert.assertEquals;
 import static pl.edu.agh.annotated.annotations.TestTypes.UnitTest;
 

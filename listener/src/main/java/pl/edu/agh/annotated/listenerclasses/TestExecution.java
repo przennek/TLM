@@ -11,6 +11,7 @@ import org.testng.IInvokedMethod;
 import org.testng.ITestResult;
 import pl.edu.agh.exceptions.TokenCouldNotBeParsedException;
 import pl.edu.agh.globals.GlobalListener;
+import pl.edu.agh.globals.PriorityAwareListener;
 import pl.edu.agh.logger.TLMLogger;
 import pl.edu.agh.util.FileHelper;
 import pl.edu.agh.util.ListenerHelper;
@@ -27,7 +28,7 @@ import java.util.List;
 /**
  * Created by Przemek on 23.12.2016.
  */
-public class TestExecution extends GlobalListener {
+public class TestExecution extends PriorityAwareListener {
     private static TLMLogger log = TLMLogger.getLogger(TestExecution.class.getName());
 
     public TestExecution() {
@@ -35,12 +36,12 @@ public class TestExecution extends GlobalListener {
     }
 
     @Override
-    public void before(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
+    public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         // nothing here
     }
 
     @Override
-    public void after(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
+    public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         try {
             Path path = FileHelper.get().preparePath(iInvokedMethod.getTestMethod());
             String token = FileHelper.get().getToken(path);
@@ -64,7 +65,7 @@ public class TestExecution extends GlobalListener {
             nvps.add(new BasicNameValuePair("testFileId", token));
             nvps.add(new BasicNameValuePair("user",
                     FileHelper.get().getTlmProperties().getProperty("user")));
-            nvps.add(new BasicNameValuePair("timestamp", new Date().toString()));
+            nvps.add(new BasicNameValuePair("timestamp", Long.toString(new Date().getTime())));
             nvps.add(new BasicNameValuePair("isSuccess", success.toString()));
 
             postRequest.setEntity(new UrlEncodedFormEntity(nvps));

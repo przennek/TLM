@@ -5,17 +5,34 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Przemek on 26.10.2016.
  */
-@Getter @Setter @Accessors(fluent = true)
+@Getter
+@Setter
+@Accessors(fluent = true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class TestClass {
     private String tokenId;
+    private String testType;
     private String className;
-    private List<String> testMethods;
+    private String moduleName;
+    private String classComment;
+    private List<JavaDocTag> classTags;
+    private List<TestMethod> testMethods;
+
+    public List<TestMethod> testMethods() {
+        if(testMethods == null) testMethods = new ArrayList<>();
+        return testMethods;
+    }
+
+    public List<JavaDocTag> classTags() {
+        if(classTags == null) classTags = new ArrayList<>();
+        return classTags;
+    }
 
     @Override
     public String toString() {

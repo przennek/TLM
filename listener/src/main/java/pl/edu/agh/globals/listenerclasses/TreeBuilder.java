@@ -1,4 +1,4 @@
-package pl.edu.agh.annotated.listenerclasses;
+package pl.edu.agh.globals.listenerclasses;
 
 import org.testng.IInvokedMethod;
 import org.testng.ITestResult;

@@ -10,17 +10,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
-import pl.edu.agh.annotated.annotations.TestType;
+//import pl.edu.agh.annotated.annotations.TestType;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static pl.edu.agh.annotated.annotations.TestTypes.IntegrationTest;
+//import static pl.edu.agh.annotated.annotations.TestTypes.IntegrationTest;
 
 //import pl.edu.agh.model.mongo.User;
 //import pl.edu.agh.model.mongo.UserRepository;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext
-@TestType(IntegrationTest)
+//@TestType(IntegrationTest)
 @Description("MongoDB has to be up and running for these to pass!")
 public class TlmApplicationTests extends AbstractTestNGSpringContextTests {
     private final String UNAME = "test";
