@@ -12,7 +12,7 @@ export class ModuledetailService {
   }
 
   getModuleTree(module: string) {
-    return "{\"src/test/java/pl/edu/agh/util\":[\"Test1\",\"Test2\",\"Test3\"]}"
+    return [{"name":"java","children":[{"name":"pl","children":[{"name":"edu","children":[{"name":"agh","children":[{"name":"util","children":[{"name":"FileHelperTest.java","token":""},{"name":"TestClassDataExtractorTest.java","token":""}]}]}]}]}]}]
   }
 
   // getLogsGivenPhrase(msg: String) {

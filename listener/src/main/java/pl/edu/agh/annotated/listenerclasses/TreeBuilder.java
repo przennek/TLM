@@ -2,6 +2,7 @@ package pl.edu.agh.annotated.listenerclasses;
 
 import org.testng.IInvokedMethod;
 import org.testng.ITestResult;
+import org.testng.annotations.Test;
 import pl.edu.agh.annotated.model.FileEntry;
 import pl.edu.agh.exceptions.TokenCouldNotBeParsedException;
 import pl.edu.agh.globals.GlobalListener;
@@ -17,6 +18,7 @@ import java.nio.file.Paths;
  */
 public class TreeBuilder extends GlobalListener {
     private static TLMLogger log = TLMLogger.getLogger(TreeBuilder.class.getName());
+
     public TreeBuilder() {
         super(98);
     }
@@ -42,11 +44,7 @@ public class TreeBuilder extends GlobalListener {
             for (File childNode : childNodes) {
                 FileEntry fileEntry = new FileEntry(childNode);
                 try {
-                    if(tokenActivated) {
-                        if("".equals(FileHelper.get().getToken(fileEntry.file().toPath()))) {
-                            parentNode.addSuccessor(fileEntry);
-                        }
-                    } else {
+                    if ("".equals(FileHelper.get().getToken(fileEntry.file().toPath())) || !tokenActivated) {
                         parentNode.addSuccessor(fileEntry);
                     }
                 } catch (TokenCouldNotBeParsedException e) {

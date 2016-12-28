@@ -1,8 +1,8 @@
-<ul class="list-group">
-  <li class="list-group-item">
+<ul class="nav nav-pills">
+  <li [class.active]="page === '/dashboard'" role="presentation">
     <a href="dashboard">dashboard</a>
   </li>
-  <li class="list-group-item">
+  <li [class.active]="page === '/log'" role="presentation">
     <a href="log">log</a>
   </li>
 </ul>

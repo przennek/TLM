@@ -1,3 +1,10 @@
-<p>
-  Module tree: {{module}}
-</p>
+<div class="page-header">
+  <h1>Tree for {{module}} module:</h1>
+</div>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <Tree #tree [nodes]="nodes" (onBlur)="onSelectedNode($event)"></Tree>
+  </div>
+</div>
+<app-test-detail *ngIf="currentNode !== null" [node]="currentNode"></app-test-detail>
+

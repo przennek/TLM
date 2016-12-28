@@ -1,25 +1,26 @@
 <!--header-->
-<nav class="navbar navbar-default navbar-inverse" style="border-radius: 0 !important">
-  <div class="navbar-header">
-    <a class="navbar-brand" href="#">TLM</a>
+<nav class="navbar navbar-default navbar-static-top navbar-fixed-top navbar-inverse"
+     style="border-radius: 0 !important">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">TLM</a>
+    </div>
+    <div class="collapse navbar-collapse" style="padding-top: 5px">
+      <app-navbar></app-navbar>
+    </div>
   </div>
 </nav>
+<div style="padding-top: 30px"></div>
 <!--/header-->
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-2">
-      <app-navbar></app-navbar>
     </div>
-    <div class="col-md-1"></div>
     <div class="col-md-8">
       <router-outlet></router-outlet>
     </div>
+    <div class="col-md-2"></div>
   </div>
 </div>
-<!-- footer -->
-<footer class="navbar-fixed-bottom">
-  <div class="container">
-    <p class="text-muted">Test lifecycle management</p>
-  </div>
-</footer>
-<!-- /footer -->
+<p class="navbar-brand navbar-fixed-bottom text-muted">Test lifecycle management</p>
+<div style="padding-bottom: 30px"></div>

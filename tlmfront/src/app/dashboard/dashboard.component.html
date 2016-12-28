@@ -1,9 +1,12 @@
-<p>Available modules:</p>
-<ul>
-  <li *ngFor="let module of moduleList"
+<div class="page-header">
+  <h1>Available modules:</h1>
+</div>
+<ul class="list-group">
+  <li class="list-group-item" *ngFor="let module of moduleList"
       [class.selected]="module === selectedModule"
+      [class.active]="module === selectedModule"
       (click)="onClick(module)">
     {{module}}
   </li>
 </ul>
-<app-moduledetail [class.hidden]="selectedModule === null" [module]="selectedModule"></app-moduledetail>
+<app-moduledetail *ngIf="selectedModule !== null" [module]="selectedModule"></app-moduledetail>

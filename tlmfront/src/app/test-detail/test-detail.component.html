@@ -1,0 +1,46 @@
+<div class="page-header">
+  <h1>Test details:</h1>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Full test class name</div>
+      <div class="panel-body">
+        {{ this.testDetail.className }}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-success">
+      <div class="panel-heading">Class comment</div>
+      <div class="panel-body">
+        {{ this.testDetail.classComment }}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-warning">
+      <div class="panel-heading">Test type</div>
+      <div class="panel-body">
+        {{ this.testDetail.testType}}
+      </div>
+    </div>
+  </div>
+</div>
+<ul class="list-group panel panel-danger">
+  <div class="panel-heading">Test tags</div>
+  <li class="list-group-item" *ngFor="let tag of this.testDetail.classTags">
+    {{ tag.tagName }}: {{ tag.tagText }}
+  </li>
+</ul>
+<ul class="list-group panel panel-default">
+  <div class="panel-heading">Test methods</div>
+  <li class="list-group-item" *ngFor="let method of this.testDetail.testMethods">
+    {{ method.methodName }} {{ method.methodComment }}
+    <ul>
+      <li *ngFor="let param of method.methodParameters">
+        {{ param }}
+      </li>
+    </ul>
+  </li>
+</ul>
