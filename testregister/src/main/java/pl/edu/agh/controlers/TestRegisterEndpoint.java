@@ -63,6 +63,14 @@ public class TestRegisterEndpoint {
         return result;
     }
 
+    @RequestMapping(value = "/isTokenUsed", method = RequestMethod.POST)
+    @ExceptionHandler(IOException.class)
+    public String isTokenUsed(String tokenId) {
+        DbTest testObj = testsRepository.findOne(UUID.fromString(tokenId));
+        boolean isTestInDb = testObj != null;
+        return String.format("{\"token\": \"%s\", \"isInDB\": "+ Boolean.toString(isTestInDb)+"}", tokenId);
+    }
+
     @RequestMapping(value = "/addTestExecutionStamp", method = RequestMethod.POST)
     @ExceptionHandler(IOException.class)
     public String addStamp(String testFileId, String user, String timestamp, String isSuccess) {
