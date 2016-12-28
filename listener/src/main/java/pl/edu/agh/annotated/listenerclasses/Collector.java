@@ -111,7 +111,7 @@ public class Collector extends PriorityAwareListener {
         }
     }
 
-    private Boolean isTestInDB(TestClass testClass) {
+    public static Boolean isTestInDB(TestClass testClass) {
         ObjectMapper mapper = new ObjectMapper();
 
         try (DefaultHttpClient httpClient = new DefaultHttpClient()) {

@@ -5,6 +5,9 @@
   <li [class.active]="page === '/log'" role="presentation">
     <a href="log">Log</a>
   </li>
+  <li style="float:right">
+    <p class="text-muted" style="padding-top: 10px">{{cookieService.get("login")}}</p>
+  </li>
   <li (click)="logout()" [class.hidden]="isLoggedIn()" style="float:right">
     <a href="#">logout</a>
   </li>

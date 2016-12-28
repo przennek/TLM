@@ -23,6 +23,7 @@ export class NavbarComponent implements OnInit {
   logout() {
     this.navbarService.propagateLogout();
     this.cookieService.remove("auth-token");
+    this.cookieService.remove("login");
   }
 
   isLoggedIn() {

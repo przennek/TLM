@@ -1,20 +1,25 @@
 package pl.edu.agh.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.assertj.core.util.VisibleForTesting;
 import org.testng.ITestNGMethod;
+import pl.edu.agh.annotated.listenerclasses.Collector;
 import pl.edu.agh.exceptions.TLMPropertiesNotFoundException;
 import pl.edu.agh.exceptions.TokenCouldNotBeParsedException;
 import pl.edu.agh.logger.TLMLogger;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -24,6 +29,7 @@ import java.util.function.Supplier;
 public class FileHelper {
     private static TLMLogger log = TLMLogger.getLogger(FileHelper.class.getName());
     private static FileHelper instance;
+    private static final String TLM_TOKEN = "tlm-token";
     private URL PROPERTIES_PATH;
 
     public static FileHelper get() {
@@ -53,11 +59,11 @@ public class FileHelper {
 
     public String markTestClass(Path path) {
         // TODO verify in db if token is unique
-        String uniqueToken = uniqueToken(() -> UUID.randomUUID().toString(), String -> true);
+        String uniqueToken = uniqueToken(() -> UUID.randomUUID().toString(), FileHelper::isTokenUsed);
         try {
-            Files.setAttribute(path, "user:test_class_id", uniqueToken.getBytes(StandardCharsets.UTF_8));
+            Files.write(path, ("// " + TLM_TOKEN + ": " + uniqueToken).getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
-            log.error("Error while setting token on file attribute. OS probably doesn't support such operations.", e);
+            log.error("Error while setting token on file.", e);
         }
         return uniqueToken;
     }
@@ -96,7 +102,7 @@ public class FileHelper {
     }
 
     public String getToken(Path path) throws TokenCouldNotBeParsedException {
-        byte[] readToken;
+        final String[] readToken = new String[1];
 
         if (!Files.exists(path)) {
             log.error("Error while reading test file on path: " + path.toString(), null);
@@ -104,16 +110,43 @@ public class FileHelper {
         }
 
         try {
-            readToken = (byte[]) Files.getAttribute(path, "user:test_class_id");
-        } catch (NoSuchFileException e) {
-            return "";
-        } catch (FileSystemException e) {
-            return "";
+            final boolean[] found = {false};
+            Files.lines(path).forEach(line -> {
+                if (line.contains(TLM_TOKEN)) {
+                    found[0] = true;
+                    readToken[0] = line;
+                }
+            });
+
+            if(!found[0]) {
+                throw new TokenCouldNotBeParsedException();
+            }
+
+            return readToken[0].replaceAll("//", "").replaceAll(TLM_TOKEN + ":", "").trim();
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             throw new TokenCouldNotBeParsedException();
         }
-        return new String(readToken, StandardCharsets.UTF_8);
+    }
+
+    private static Boolean isTokenUsed(String token) {
+        try (DefaultHttpClient httpClient = new DefaultHttpClient()) {
+            HttpPost postRequest = ListenerHelper.prepareRequest("isTestInDb");
+
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            nvps.add(new BasicNameValuePair("testFileId", token));
+            postRequest.setEntity(new UrlEncodedFormEntity(nvps));
+
+            HttpResponse response = httpClient.execute(postRequest);
+
+            String json = new BufferedReader(new InputStreamReader(
+                    response.getEntity().getContent())).readLine();
+
+            return (Boolean) new ObjectMapper().readValue(json, HashMap.class).get("isInDB");
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+        return false;
     }
 
     @VisibleForTesting

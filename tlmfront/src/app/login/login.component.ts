@@ -15,12 +15,12 @@ export class LoginComponent implements OnInit {
               private cookieService: CookieService) {
   }
 
-  lgn: String;
-  psw: String;
-  validatePsw: String;
-  email: String;
+  lgn: string;
+  psw: string;
+  validatePsw: string;
+  email: string;
 
-  message: String;
+  message: string;
   shouldMessageBeVisible: boolean;
 
   register: boolean;
@@ -37,7 +37,8 @@ export class LoginComponent implements OnInit {
     promise.subscribe(data => {
       this.loginService.authorise(this.cookieService.get("auth-token"))
         .subscribe(data => {
-          console.log("logged in: ok")
+          console.log("logged in: ok");
+          this.cookieService.put("login", this.lgn);
           this.redirectIfNeeded();
         }, error => {
           console.log(JSON.stringify(error.json()));
