@@ -58,7 +58,11 @@ public class TreeBuilder extends GlobalListener {
             for (File childNode : childNodes) {
                 FileEntry fileEntry = new FileEntry(childNode);
                 try {
-                    if ("".equals(FileHelper.get().getToken(fileEntry.file().toPath())) || !tokenActivated) {
+                    if(!fileEntry.directory()) {
+                        if ("".equals(FileHelper.get().getToken(fileEntry.file().toPath())) || !tokenActivated) {
+                            parentNode.addSuccessor(fileEntry);
+                        }
+                    } else {
                         parentNode.addSuccessor(fileEntry);
                     }
                 } catch (TokenCouldNotBeParsedException e) {

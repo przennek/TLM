@@ -1,6 +1,7 @@
 package pl.edu.agh.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -22,6 +23,7 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Created by Przemek on 24.10.2016.
@@ -61,7 +63,7 @@ public class FileHelper {
         // TODO verify in db if token is unique
         String uniqueToken = uniqueToken(() -> UUID.randomUUID().toString(), FileHelper::isTokenUsed);
         try {
-            Files.write(path, ("// " + TLM_TOKEN + ": " + uniqueToken).getBytes(), StandardOpenOption.APPEND);
+            Files.write(path, ("\n// " + TLM_TOKEN + ": " + uniqueToken).getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             log.error("Error while setting token on file.", e);
         }
@@ -70,7 +72,10 @@ public class FileHelper {
 
     public void deleteMark(Path path) {
         try {
-            Files.setAttribute(path, "user:test_class_id", "".getBytes(StandardCharsets.UTF_8));
+            File file = path.toFile();
+            List<String> lines = FileUtils.readLines(file);
+            List<String> updatedLines = lines.stream().filter(s -> !s.contains(("// " + TLM_TOKEN + ": "))).collect(Collectors.toList());
+            FileUtils.writeLines(file, updatedLines, false);
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
@@ -119,7 +124,7 @@ public class FileHelper {
             });
 
             if(!found[0]) {
-                throw new TokenCouldNotBeParsedException();
+                return "";
             }
 
             return readToken[0].replaceAll("//", "").replaceAll(TLM_TOKEN + ":", "").trim();
@@ -131,10 +136,10 @@ public class FileHelper {
 
     private static Boolean isTokenUsed(String token) {
         try (DefaultHttpClient httpClient = new DefaultHttpClient()) {
-            HttpPost postRequest = ListenerHelper.prepareRequest("isTestInDb");
+            HttpPost postRequest = ListenerHelper.prepareRequest("isTokenUsed");
 
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-            nvps.add(new BasicNameValuePair("testFileId", token));
+            nvps.add(new BasicNameValuePair("tokenId", token));
             postRequest.setEntity(new UrlEncodedFormEntity(nvps));
 
             HttpResponse response = httpClient.execute(postRequest);
@@ -154,7 +159,7 @@ public class FileHelper {
         final Integer MAX_RETRIES = 10;
         Integer n = 0;
         String token = tokenGenerator.get();
-        while (!isUnique.apply(token)) {
+        while (isUnique.apply(token)) {
             if (n++ > MAX_RETRIES) throw new RuntimeException("Max retries exceeded! Check sanity of your db!");
             token = tokenGenerator.get();
         }
