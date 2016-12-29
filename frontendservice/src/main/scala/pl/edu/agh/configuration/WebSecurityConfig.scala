@@ -19,6 +19,8 @@ import pl.edu.agh.configuration.filters.AuthFilter
 
   @throws[Exception]
   override protected def configure(http: HttpSecurity) {
-    http.addFilterBefore(new AuthFilter, classOf[BasicAuthenticationFilter]).authorizeRequests.anyRequest.permitAll
+    http
+      //.addFilterBefore(new AuthFilter, classOf[BasicAuthenticationFilter])
+      .authorizeRequests.anyRequest.permitAll
   }
 }

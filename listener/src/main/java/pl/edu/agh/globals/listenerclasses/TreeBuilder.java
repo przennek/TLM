@@ -40,7 +40,8 @@ public class TreeBuilder extends GlobalListener {
     @Override
     public void before(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         try {
-            System.out.println(crawl(FileHelper.get().getTestPackagePath(), true));
+            String moduleName  =  FileHelper.get().getTlmProperties().getProperty("moduleName");
+            registerTree(moduleName, crawl(FileHelper.get().getTestPackagePath(), true));
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
@@ -49,7 +50,7 @@ public class TreeBuilder extends GlobalListener {
     public String crawl(String path, Boolean tokenActivated) {
         File inputFolder = Paths.get(path).toFile();
         FileEntry parentNode = new FileEntry(inputFolder);
-        return walk(parentNode, tokenActivated);
+        return "["+walk(parentNode, tokenActivated)+"]";
     }
 
     public String walk(FileEntry parentNode, Boolean tokenActivated) {
@@ -80,25 +81,26 @@ public class TreeBuilder extends GlobalListener {
 
     }
 
-//    private Boolean registerTree(TestClass testClass) {
-//        ObjectMapper mapper = new ObjectMapper();
-//
-//        try (DefaultHttpClient httpClient = new DefaultHttpClient()) {
-//            HttpPost postRequest = ListenerHelper.prepareRequest("addTree");
-//
-//            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-//            nvps.add(new BasicNameValuePair("testTree", mapper.writeValueAsString(testClass)));
-//            postRequest.setEntity(new UrlEncodedFormEntity(nvps));
-//
-//            HttpResponse response = httpClient.execute(postRequest);
-//
-//            String json = new BufferedReader(new InputStreamReader(
-//                    response.getEntity().getContent())).readLine();
-//
-//            return (Boolean) new ObjectMapper().readValue(json, HashMap.class).get("added");
-//        } catch (IOException e) {
-//            log.error(e.getMessage(), e);
-//            return false;
-//        }
-//    }
+    private Boolean registerTree(String moduleName, String jsonData) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        try (DefaultHttpClient httpClient = new DefaultHttpClient()) {
+            HttpPost postRequest = ListenerHelper.prepareRequest("addTestTree");
+
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            nvps.add(new BasicNameValuePair("moduleName", moduleName));
+            nvps.add(new BasicNameValuePair("testTree", jsonData));
+            postRequest.setEntity(new UrlEncodedFormEntity(nvps));
+
+            HttpResponse response = httpClient.execute(postRequest);
+
+            String json = new BufferedReader(new InputStreamReader(
+                    response.getEntity().getContent())).readLine();
+
+            return (Boolean) new ObjectMapper().readValue(json, HashMap.class).get("added");
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            return false;
+        }
+    }
 }

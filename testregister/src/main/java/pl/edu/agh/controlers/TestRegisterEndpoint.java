@@ -1,7 +1,9 @@
 package pl.edu.agh.controlers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,6 +12,7 @@ import pl.edu.agh.cassandra.repositories.TestsRepository;
 import pl.edu.agh.cassandra.repositories.TestsTreeRepository;
 import pl.edu.agh.logger.TLMLogger;
 import pl.edu.agh.model.ws.DbTest;
+import pl.edu.agh.model.ws.DbTestLog;
 import pl.edu.agh.model.ws.TestClass;
 
 import java.io.IOException;
@@ -29,7 +32,7 @@ public class TestRegisterEndpoint {
     private TestsTreeRepository testsTreeRepository;
 
     @RequestMapping(value = "/addTest", method = RequestMethod.POST)
-    @ExceptionHandler(IOException.class)
+    //@ExceptionHandler(IOException.class)
     public String registerTest(String testClass){
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -48,7 +51,7 @@ public class TestRegisterEndpoint {
     }
 
     @RequestMapping(value = "/isTestInDb", method = RequestMethod.POST)
-    @ExceptionHandler(IOException.class)
+    //@ExceptionHandler(IOException.class)
     public String isTestInDB(String testClass) {
         ObjectMapper mapper = new ObjectMapper();
         String result = "";
@@ -64,7 +67,7 @@ public class TestRegisterEndpoint {
     }
 
     @RequestMapping(value = "/isTokenUsed", method = RequestMethod.POST)
-    @ExceptionHandler(IOException.class)
+    //@ExceptionHandler(IOException.class)
     public String isTokenUsed(String tokenId) {
         DbTest testObj = testsRepository.findOne(UUID.fromString(tokenId));
         boolean isTestInDb = testObj != null;
@@ -72,9 +75,27 @@ public class TestRegisterEndpoint {
     }
 
     @RequestMapping(value = "/addTestExecutionStamp", method = RequestMethod.POST)
-    @ExceptionHandler(IOException.class)
+    //@ExceptionHandler(IOException.class)
     public String addStamp(String testFileId, String user, String timestamp, String isSuccess) {
-        testsRepository.updateTestLog(UUID.fromString(testFileId), user, Long.parseLong(timestamp), Boolean.parseBoolean(isSuccess) );
+        ObjectMapper mapper = new ObjectMapper();
+        DbTestLog editLogObj = new DbTestLog().userName(user).date(Long.parseLong(timestamp)).isSuccess(Boolean.parseBoolean(isSuccess));
+        try {
+            testsRepository.updateTestLog(UUID.fromString(testFileId), mapper.writeValueAsString(editLogObj));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "{\"added\": false}";
+        }
+        return "{\"added\": true}";
+    }
+
+    @RequestMapping(value = "/addTestTree", method = RequestMethod.POST)
+    //@ExceptionHandler(IOException.class)
+    public String addTestTree(String moduleName, String testTree) {
+        if(testsTreeRepository.findTreeByModuleName(moduleName) == null)  {
+            testsTreeRepository.addTree(moduleName, testTree);
+        } else {
+            testsTreeRepository.updateTree(moduleName, testTree);
+        }
         return "{\"added\": true}";
     }
 }

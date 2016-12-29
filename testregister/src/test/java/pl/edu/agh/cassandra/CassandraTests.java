@@ -44,13 +44,13 @@ public class CassandraTests extends AbstractTestNGSpringContextTests {
         testId = UUID.randomUUID();
         testTreeId = UUID.randomUUID();
         testsRepository.addTest(testId, "Testclass", "TestModule", "{}");
-        testsTreeRepository.addTree(testTreeId, "testModule", "{}");
+        testsTreeRepository.addTree("testModule", "{}");
     }
 
     @AfterClass
     public void flushTest() {
         testsRepository.deleteTest(testId);
-        testsTreeRepository.deleteTree(testTreeId);
+        testsTreeRepository.deleteTree("testModule");
     }
 
     @Test
@@ -62,7 +62,7 @@ public class CassandraTests extends AbstractTestNGSpringContextTests {
     @Test
     public void getAllTestTrees() throws Exception {
         testsRepository.updateTest(testId, "Testclass", "TestModule", "{}");
-        testsTreeRepository.updateTree(testTreeId, "testModule2", "{a:'a'}");
+        testsTreeRepository.updateTree("testModule2", "{a:'a'}");
         List<DbTestTree> testTrees = testsTreeRepository.findAllTrees();
     }
 
