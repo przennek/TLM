@@ -65,4 +65,15 @@
       </div>
     </li>
   </ul>
+  <ul *ngIf="this.runLog.length !== 0" class="list-group panel panel-warning">
+    <div class="panel-heading">Test execution log</div>
+    <table class="table">
+      <tr><th>Time</th><th>User</th><th>Status</th></tr>
+      <tr *ngFor="let log of this.runLog">
+        <td> {{ log.date | date: 'dd/MM/yyyy HH:mm:ssZ' }}</td>
+        <td>{{ log.userName }}</td>
+        <td>{{ log.isSuccess }}</td>
+      </tr>
+    </table>
+  </ul>
 </div>

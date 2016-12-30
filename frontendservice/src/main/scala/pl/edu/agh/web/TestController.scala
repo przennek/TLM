@@ -1,15 +1,14 @@
 package pl.edu.agh.web
 
-import java.io.{ByteArrayOutputStream, OutputStream}
 import java.util.UUID
 
-import scala.collection.JavaConversions._
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.{RequestMapping, RequestMethod, RestController}
+import org.springframework.web.bind.annotation.{RequestMapping, RestController}
 import pl.edu.agh.cassandra.services.TestsService
 
-import scala.collection.mutable.ListBuffer
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import scala.util.{Failure, Success}
@@ -26,7 +25,10 @@ class TestController() {
       case Failure(e) => Left(e)
     }
     if (resultEither.isRight && resultEither.right.get.isDefined) {
-      return resultEither.right.get.get.jsonData
+      val mapper  = new ObjectMapper() with ScalaObjectMapper
+      mapper.registerModule(DefaultScalaModule)
+      mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+      return mapper.writeValueAsString(resultEither.right.get.get)
     } else  {
       throw new Exception("Not found")
     }
@@ -58,9 +60,10 @@ class TestController() {
         case Failure(e) => Left(e)
       }
       if (resultEither.isRight && resultEither.right.get.length > 0) {
-        val mapper  = new ObjectMapper()
-        val jResult: java.util.List[String] = ListBuffer(resultEither.right.get: _*)
-        return mapper.writeValueAsString(mapper.writeValueAsString(jResult))
+        val mapper  = new ObjectMapper() with ScalaObjectMapper
+        mapper.registerModule(DefaultScalaModule)
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        return mapper.writeValueAsString(mapper.writeValueAsString(resultEither.right.get))
       } else  {
         throw new Exception("Not found")
       }
