@@ -21,7 +21,7 @@ public interface TestsTreeRepository extends CrudRepository<DbTestTree, String> 
     @Query("INSERT INTO  tests_tree (moduleName, jsonData) VALUES (?0, ?1)")
     void  addTree(String moduleName, String jsonData);
 
-    @Query("UPDATE tests_tree SET moduleName = ?0, jsonData = ?1 WHERE moduleName = ?0")
+    @Query("UPDATE tests_tree SET jsonData = ?1 WHERE moduleName = ?0")
     void updateTree(String moduleName, String jsonData);
 
     @Query("DELETE FROM tests_tree WHERE moduleName = ?0")

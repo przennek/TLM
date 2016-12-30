@@ -58,6 +58,16 @@ public class TestClassDataExtractorTest {
         assertEquals(classDescription, "Test comment to test class");
     }
 
+    /**
+     * Test comment to test
+     *
+     * @param arg1 test first argument
+     * @param arg2 test second argument
+     * @param arg3 test third argument
+     * @return the image at the specified URL
+     * @author Test author tag
+     * @see Image
+     */
     @Test
     public void validateTestClassTags() {
         //given
@@ -76,20 +86,6 @@ public class TestClassDataExtractorTest {
             assertEquals(classTags.get(i).tagName(), validTags.get(i).tagName());
             assertEquals(classTags.get(i).tagText(), validTags.get(i).tagText());
         }
-    }
-
-    /**
-     * Test comment to test
-     *
-     * @param arg1 test first argument
-     * @param arg2 test second argument
-     * @param arg3 test third argument
-     * @return the image at the specified URL
-     * @author Test author tag
-     * @see Image
-     */
-    public String testMethodName(String arg1, Integer arg2, List<String> arg3) {
-        return "testString";
     }
 }
 // tlm-token: 03a391aa-2dbb-400d-b07e-41e6d7983a74

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, OnChanges} from "@angular/core";
 import {TestDetailService} from "./test-detail.service";
 
 @Component({
@@ -7,7 +7,7 @@ import {TestDetailService} from "./test-detail.service";
   styleUrls: ['./test-detail.component.css'],
   providers: [TestDetailService]
 })
-export class TestDetailComponent implements OnInit {
+export class TestDetailComponent implements OnInit, OnChanges {
   @Input()
   node;
 
@@ -22,9 +22,16 @@ export class TestDetailComponent implements OnInit {
   ngOnInit() {
     this.token = this.node.data.token;
     this.name = this.node.data.name;
-    this.testDetail = this.testDetailService.getTestDetail(this.token);
-    console.log(this.testDetail)
-    console.log(this.testDetail.classComment)
+    this.testDetailService.getTestDetail(this.token)
+      .subscribe(data => {
+        console.log((data as any)._body);
+        this.testDetail = JSON.parse((data as any)._body);
+      }, error => {
+        console.log(JSON.stringify(error.json()));
+      });
   }
 
+  ngOnChanges() {
+    this.ngOnInit();
+  }
 }

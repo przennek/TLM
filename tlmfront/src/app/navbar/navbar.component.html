@@ -1,8 +1,8 @@
 <ul class="nav nav-pills">
-  <li [class.active]="page === '/dashboard'" role="presentation">
+  <li [class.hidden]="isLoggedIn()" [class.active]="page === '/dashboard'" role="presentation">
     <a href="dashboard">Dashboard</a>
   </li>
-  <li [class.active]="page === '/log'" role="presentation">
+  <li [class.hidden]="isLoggedIn()" [class.active]="page === '/log'" role="presentation">
     <a href="log">Log</a>
   </li>
   <li style="float:right">

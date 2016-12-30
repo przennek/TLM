@@ -15,8 +15,13 @@ trait TestsService extends ProductionTestDatabase {
   def findTestById(id: UUID): Future[Option[DbTest]] = {
     database.testsRepository.findTestById(id)
   }
+
   def findTestTreeByModuleName(moduleName: String): Future[Option[DbTestTree]] = {
     database.testsTreeRepository.findTestTreeByModuleName(moduleName)
+  }
+
+  def findAllTestTreesNames(): Future[List[String]]  = {
+    database.testsTreeRepository.findAllTestTreesNames()
   }
 
 }

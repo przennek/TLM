@@ -24,34 +24,16 @@ public class FileHelperTest {
     private File testFile = null;
     private Path path;
 
-    @BeforeClass
-    public void prepareFile() throws IOException {
-        testFile = new File("src\\main\\resources\\tmp_test.file\\");
-        testFile.createNewFile();
-        path = testFile.toPath();
-    }
-
-    @AfterClass
-    public void deleteFile() {
-        testFile.delete();
-    }
-
     @Test
     public void shouldGenerateToken() throws Exception {
         // given
         String result;
 
         // when
-        result = FileHelper.get().uniqueToken(() -> TOKEN_RESULT, String -> true);
+        result = FileHelper.get().uniqueToken(() -> TOKEN_RESULT, String -> false);
 
         // then
         assertEquals(result, TOKEN_RESULT);
-    }
-
-    @Test(expectedExceptions = RuntimeException.class)
-    public void shouldNotGenerateToken() {
-        // should throw runtime exception
-        FileHelper.get().uniqueToken(() -> TOKEN_RESULT, String -> false);
     }
 
     @Test
@@ -110,5 +92,18 @@ public class FileHelperTest {
         // then
         assertEquals(mypath.toString().replaceAll("\\\\", "").replaceAll("/", ""), "srctestjavapleduaghFileHelperTest.java");
     }
+
+    @BeforeClass
+    public void prepareFile() throws IOException {
+        testFile = new File("src\\main\\resources\\tmp_test.file\\");
+        testFile.createNewFile();
+        path = testFile.toPath();
+    }
+
+    @AfterClass
+    public void deleteFile() {
+        testFile.delete();
+    }
+
 }
 // tlm-token: 1a2cacf5-fbe6-4460-a13f-c251551e4038

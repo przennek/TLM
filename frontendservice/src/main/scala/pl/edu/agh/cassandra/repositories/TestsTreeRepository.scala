@@ -26,4 +26,9 @@ abstract class TestsTreeRepository extends TestTreeModel with RootConnector {
       .consistencyLevel_=(ConsistencyLevel.ONE)
       .one()
   }
+
+  def findAllTestTreesNames(): Future[List[String]] = {
+    select(_.moduleName).all()
+      .consistencyLevel_=(ConsistencyLevel.ALL).fetch()
+  }
 }

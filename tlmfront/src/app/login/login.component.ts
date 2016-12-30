@@ -33,20 +33,27 @@ export class LoginComponent implements OnInit {
   }
 
   applyLogin(): void {
-    var promise = this.loginService.login(this.lgn, this.psw);
-    promise.subscribe(data => {
-      this.loginService.authorise(this.cookieService.get("auth-token"))
-        .subscribe(data => {
-          console.log("logged in: ok");
-          this.cookieService.put("login", this.lgn);
-          this.redirectIfNeeded();
-        }, error => {
-          console.log(JSON.stringify(error.json()));
-        });
-    }, error => {
+    if(this.lgn === undefined && this.psw === undefined) {
+      this.register = false;
+      this.shouldMessageBeVisible = false;
+      this.message = "Enter you login and password.";
       this.shouldMessageBeVisible = true;
-      this.message = "Wrong login or password.";
-    });
+    } else {
+      var promise = this.loginService.login(this.lgn, this.psw);
+      promise.subscribe(data => {
+        this.loginService.authorise(this.cookieService.get("auth-token"))
+          .subscribe(data => {
+            console.log("logged in: ok");
+            this.cookieService.put("login", this.lgn);
+            this.redirectIfNeeded();
+          }, error => {
+            console.log(JSON.stringify(error.json()));
+          });
+      }, error => {
+        this.shouldMessageBeVisible = true;
+        this.message = "Wrong login or password.";
+      });
+    }
   }
 
   redirectIfNeeded() {
@@ -58,6 +65,7 @@ export class LoginComponent implements OnInit {
   applyRegister() {
     if (!this.register) {
       this.shouldMessageBeVisible = true;
+      this.message = "Additional action is required to register";
       this.register = true;
     } else {
       this.shouldMessageBeVisible = true;

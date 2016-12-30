@@ -17,7 +17,11 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.page = window.location.pathname;
+    if(window.location.pathname === "/") {
+      this.page = "/dashboard"
+    } else {
+      this.page = window.location.pathname;
+    }
   }
 
   logout() {

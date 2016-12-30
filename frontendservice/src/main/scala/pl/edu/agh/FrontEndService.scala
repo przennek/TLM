@@ -17,8 +17,8 @@ import pl.edu.agh.sessionmanager.SessionManager
   */
 object FrontEndService extends App {
   SpringApplication.run(classOf[FrontEndService])
-
 }
+
 @SpringBootApplication
 @Configuration
 @EnableAutoConfiguration

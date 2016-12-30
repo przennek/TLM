@@ -1,7 +1,7 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, OnChanges} from "@angular/core";
 import {ModuledetailService} from "./moduledetail.service";
-import { TreeModule } from 'angular2-tree-component';
-import 'rxjs/Rx';
+import {TreeModule} from "angular2-tree-component";
+import "rxjs/Rx";
 
 @Component({
   selector: 'app-moduledetail',
@@ -9,32 +9,40 @@ import 'rxjs/Rx';
   styleUrls: ['./moduledetail.component.css'],
   providers: [ModuledetailService, TreeModule]
 })
-export class ModuledetailComponent implements OnInit {
+export class ModuledetailComponent implements OnInit, OnChanges {
   @Input()
   module: string;
   nodes = null;
   counter: number;
   currentNode = null;
 
-  constructor(
-    private moduleDetailService: ModuledetailService
-  ) {
+  constructor(private moduleDetailService: ModuledetailService) {
     this.counter = 0;
   }
 
   ngOnInit() {
-    this.nodes = this.moduleDetailService.getModuleTree(this.module);
+    this.moduleDetailService.getModuleTree(this.module)
+      .subscribe(data => {
+        this.nodes = JSON.parse(data.text());
+      }, error => {
+        console.log(JSON.stringify(error.json()));
+      });
+  }
+
+  ngOnChanges() {
+    this.ngOnInit();
+    this.currentNode = null;
   }
 
   onSelectedNode($event) {
-    if(this.counter++ % 2 === 0) { // tree module library is buggy and triggers event twice as needed
-                                   // this hack is needed to navigate through tree properly
-      if($event.node.data.token === undefined) {
+    if ($event.node.data.token === undefined) {
+      if (this.counter++ % 2 === 0) { // tree module library is buggy and triggers event twice as needed
+                                      // this hack is needed to navigate through tree properly
         $event.node.treeModel.focusDrillDown();
-      } else {
-        console.log($event.node.data.name);
-        this.currentNode = $event.node;
       }
+    } else {
+      console.log($event.node.data.name);
+      this.currentNode = $event.node;
     }
   }
 }

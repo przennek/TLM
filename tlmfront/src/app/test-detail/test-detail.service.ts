@@ -14,20 +14,16 @@ export class TestDetailService {
   }
 
   getTestDetail(token: string) {
-    return JSON.parse('{"tokenId":"08840ec2-2a8e-4940-9c61-9abace3e4221","testType":"UnitTest","className":"pl.edu.agh.util.TestClassDataExtractorTest","classComment":"Test comment to test class","classTags":[{"tagName":"@author","tagText":"Test author tag"}],"testMethods":[{"methodName":"validateTestClassName()","methodComment":"","methodTags":[],"methodParameters":[]},{"methodName":"validateTestClassTags()","methodComment":"","methodTags":[],"methodParameters":[]},{"methodName":"validateTestClassDescription()","methodComment":"","methodTags":[],"methodParameters":[]}]}');
-  }
+      var body = 'tokenId=' + token;
+      var headers = new Headers();
+      headers.append('Content-Type', 'application/x-www-form-urlencoded');
+      headers.append('auth-token', this.cookieService.get("auth-token"));
 
-  // authorise(token: string) {
-  //   var body = '';
-  //   var headers = new Headers();
-  //   headers.append('Content-Type', 'application/x-www-form-urlencoded');
-  //   headers.append('auth-token', token);
-  //
-  //   return this.http
-  //     .post('http://localhost:8080/auth/login-success',
-  //       body, {
-  //         headers: headers,
-  //         withCredentials: true
-  //       });
-  // }
+      return this.http
+        .post('http://localhost:8080/frontendservice/getTest',
+          body, {
+            headers: headers,
+            withCredentials: true
+          });
+  }
 }

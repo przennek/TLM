@@ -1,28 +1,38 @@
 <div class="row">
   <div class="page-header">
-    <h1>Log search:</h1>
+    <h1>Log search</h1>
   </div>
   <div class="row">
     <div class="col-md-3">
-      <div class="input-group">
-        <label>Create your query:</label>
-        <select [(ngModel)]="level" (click)="select()" style="width: 100%">
-          <option value="FULLTEXT">full text search</option>
-          <option value="INFO">all in info level</option>
-          <option value="WARN">all in warn level</option>
-          <option value="DEBUG">all in debug level</option>
-          <option value="TRACE">all in trace level</option>
-          <option value="FATAL">all in fatal level</option>
-          <option value="ERROR">all in error level</option>
-        </select>
-        <input type="text" placeholder="Enter phrase" [(ngModel)]="phrase" [disabled]="disabled" style="width: 100%">
-        <p></p>
-        <button class="btn btn-primary btn-success" (click)="search()" style="width: 100%">Search</button>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="input-group">
+            <label>Create your query:</label>
+            <select [(ngModel)]="level" (click)="select()" style="width: 100%">
+              <option value="FULLTEXT">full text search</option>
+              <option value="INFO">all in info level</option>
+              <option value="WARN">all in warn level</option>
+              <option value="DEBUG">all in debug level</option>
+              <option value="TRACE">all in trace level</option>
+              <option value="FATAL">all in fatal level</option>
+              <option value="ERROR">all in error level</option>
+            </select>
+            <input type="text" placeholder="Enter phrase" [(ngModel)]="phrase" [disabled]="disabled"
+                   style="width: 100%">
+            <p></p>
+            <button class="btn btn-primary btn-success" (click)="search()" style="width: 100%">Search</button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="col-md-9">
-      <label>Log output:</label>
-      <div class="panel panel-default col-md-12 pre-scrollable text-left" [innerHTML]="logs" style="font-size: 10px">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <label>Log output:</label>
+          <div class="panel panel-default col-md-12 pre-scrollable text-left" [innerHTML]="logs"
+               style="font-size: 10px">
+          </div>
+        </div>
       </div>
     </div>
   </div>
