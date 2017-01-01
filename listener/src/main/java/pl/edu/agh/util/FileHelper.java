@@ -134,7 +134,7 @@ public class FileHelper {
         }
     }
 
-    private static Boolean isTokenUsed(String token) {
+    public static Boolean isTokenUsed(String token) {
         try (DefaultHttpClient httpClient = new DefaultHttpClient()) {
             HttpPost postRequest = ListenerHelper.prepareRequest("isTokenUsed");
 

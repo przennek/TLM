@@ -46,8 +46,10 @@ public class TestExecution extends PriorityAwareListener {
             Path path = FileHelper.get().preparePath(iInvokedMethod.getTestMethod());
             String token = FileHelper.get().getToken(path);
             if (!"".equals(token)) {
-                if (!logExecution(token, iTestResult.isSuccess())) {
-                    log.error("Something went terribly wrong and TLM is unable to log timestamp of this test execution.", null);
+                if (FileHelper.isTokenUsed(token)) {
+                    if (!logExecution(token, iTestResult.isSuccess())) {
+                        log.error("Something went terribly wrong and TLM is unable to log timestamp of this test execution.", null);
+                    }
                 }
             }
         } catch (TokenCouldNotBeParsedException ignored) {

@@ -50,10 +50,15 @@ public class Collector extends PriorityAwareListener {
 
     @Override
     public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
+        Path path = null;
+        try {
+            path = FileHelper.get().preparePath(iInvokedMethod.getTestMethod());
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
         if (ListenerHelper.hasAnnotation(iInvokedMethod, TestType.class)) {
             if (iTestResult.isSuccess()) {
                 try {
-                    Path path = FileHelper.get().preparePath(iInvokedMethod.getTestMethod());
                     String token = FileHelper.get().getToken(path);
                     if ("".equals(token)) {
                         log.error("Error while reading token from test file, does your OS support TLM?", null);
@@ -70,10 +75,10 @@ public class Collector extends PriorityAwareListener {
                         extractData(testClass, iInvokedMethod, path);
                     } catch (TestClassDataParseException e) {
                         log.error("Critical error during parsing test data from file: " + path.toString(), e);
+                        FileHelper.get().deleteMark(path);
                     }
 
                     if (!isTestInDB(testClass)) {
-
                         // register test
                         if (!register(testClass)) {
                             log.error("Failed to register token: " + token + ", on file: " + path.toString(), null);
@@ -85,7 +90,11 @@ public class Collector extends PriorityAwareListener {
                 } catch (IOException e) {
                     log.error("Configuration provided is incorrect. TLM won't work as expected.", e);
                 }
+            } else {
+                FileHelper.get().deleteMark(path);
             }
+        } else {
+            FileHelper.get().deleteMark(path);
         }
     }
 
