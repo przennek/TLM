@@ -8,9 +8,9 @@ import org.testng.annotations.Test;
 import pl.edu.agh.annotated.annotations.TestType;
 import pl.edu.agh.annotated.annotations.TestTypes;
 
-/**
- * Created by Przemek on 20.11.2016.
- */
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 @ContextConfiguration(classes = AuthConfig.class)
 @TestType(value = TestTypes.UnitTest)
 public class AuthConfigTest extends AbstractTestNGSpringContextTests {
@@ -19,8 +19,7 @@ public class AuthConfigTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void shouldReturnUsers() throws Exception {
-        System.out.println(users.find().first());
+        assertThat(users.find().first(), notNullValue());
     }
 }
 
-// tlm-token: e65a5af2-60fb-45f1-b197-f17392bb991e
