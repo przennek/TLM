@@ -27,11 +27,8 @@ import pl.edu.agh.logger.TLMLogger;
 
 @Configuration
 @PropertySource(value = { "classpath:cassandra.properties" })
-//@EnableJpaRepositories
 @EnableCassandraRepositories(basePackageClasses = {TestsTreeRepository.class, TestsRepository.class})
 public class CassandraConfig {
-
-    private static TLMLogger logger = TLMLogger.getLogger(TestRegisterEndpoint.class.getName());
 
     @Autowired
     private Environment env;

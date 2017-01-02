@@ -3,6 +3,7 @@ package pl.edu.agh.controlers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,70 +33,70 @@ public class TestRegisterEndpoint {
     private TestsTreeRepository testsTreeRepository;
 
     @RequestMapping(value = "/addTest", method = RequestMethod.POST)
-    //@ExceptionHandler(IOException.class)
     public String registerTest(String testClass){
         ObjectMapper mapper = new ObjectMapper();
         try {
             TestClass test =  mapper.readValue(testClass, TestClass.class);
-            DbTest testObj = testsRepository.findOne(UUID.fromString(test.tokenId()));
-            boolean isTestInDb = testObj != null && testObj.getJsonData().equals(testClass);
-            if(isTestInDb) {
-                testsRepository.updateTest(testObj.getId(), test.className(), test.moduleName(), testClass);
-            }  else {
-                testsRepository.addTest(UUID.fromString(test.tokenId()), test.className(), test.moduleName(), testClass);
-            }
-        } catch (IOException e) {
+            testsRepository.updateTest(UUID.fromString(test.tokenId()), test.className(), test.moduleName(), testClass);
+            return "{\"added\": true,  \"message\": \"ok\"}";
+        } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.getMessage(), e);
+            return "{\"added\": false, \"message\": \"error\"}";
         }
-        return "{\"added\": true}";
     }
 
     @RequestMapping(value = "/isTestInDb", method = RequestMethod.POST)
-    //@ExceptionHandler(IOException.class)
     public String isTestInDB(String testClass) {
         ObjectMapper mapper = new ObjectMapper();
-        String result = "";
         try {
             TestClass test =  mapper.readValue(testClass, TestClass.class);
             DbTest testObj = testsRepository.findOne(UUID.fromString(test.tokenId()));
             boolean isTestInDb = testObj != null && testObj.getJsonData().equals(testClass);
-            result = String.format("{\"test\": \"%s\", \"isInDB\": "+ Boolean.toString(isTestInDb)+"}", test.tokenId());
-        } catch (IOException e) {
+            return String.format("{\"test\": \"%s\", \"isInDB\": "+ Boolean.toString(isTestInDb)+", \"message\": \"ok\"}", test.tokenId());
+        } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.getMessage(), e);
+            return "{\"message\": \"error\"}";
         }
-        return result;
     }
 
     @RequestMapping(value = "/isTokenUsed", method = RequestMethod.POST)
-    //@ExceptionHandler(IOException.class)
     public String isTokenUsed(String tokenId) {
-        DbTest testObj = testsRepository.findOne(UUID.fromString(tokenId));
-        boolean isTestInDb = testObj != null;
-        return String.format("{\"token\": \"%s\", \"isInDB\": "+ Boolean.toString(isTestInDb)+"}", tokenId);
+        try {
+            DbTest testObj = testsRepository.findOne(UUID.fromString(tokenId));
+            boolean isTestInDb = testObj != null;
+            return String.format("{\"token\": \"%s\", \"isInDB\": "+ Boolean.toString(isTestInDb)+"}", tokenId);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            logger.error(e.getMessage(), e);
+            return "{\"message\": \"error\"}";
+        }
     }
 
     @RequestMapping(value = "/addTestExecutionStamp", method = RequestMethod.POST)
-    //@ExceptionHandler(IOException.class)
     public String addStamp(String testFileId, String user, String timestamp, String isSuccess) {
         ObjectMapper mapper = new ObjectMapper();
         DbTestLog editLogObj = new DbTestLog().userName(user).date(Long.parseLong(timestamp)).isSuccess(Boolean.parseBoolean(isSuccess));
         try {
             testsRepository.updateTestLog(UUID.fromString(testFileId), mapper.writeValueAsString(editLogObj));
-        } catch (JsonProcessingException e) {
+            return "{\"added\": true, \"message\": \"ok\"}";
+        } catch (Exception e) {
             e.printStackTrace();
-            return "{\"added\": false}";
+            logger.error(e.getMessage(), e);
+            return "{\"added\": false, \"message\": \"error\"}";
         }
-        return "{\"added\": true}";
     }
 
     @RequestMapping(value = "/addTestTree", method = RequestMethod.POST)
-    //@ExceptionHandler(IOException.class)
     public String addTestTree(String moduleName, String testTree) {
-        if(testsTreeRepository.findTreeByModuleName(moduleName) == null)  {
-            testsTreeRepository.addTree(moduleName, testTree);
-        } else {
+        try {
             testsTreeRepository.updateTree(moduleName, testTree);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            logger.error(e.getMessage(), e);
+            return "{\"added\": false, \"message\": \"error\"}";
         }
-        return "{\"added\": true}";
+        return "{\"added\": true, \"message\": \"ok\"}";
     }
 }

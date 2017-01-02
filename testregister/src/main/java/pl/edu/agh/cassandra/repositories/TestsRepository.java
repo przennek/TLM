@@ -26,7 +26,7 @@ public interface TestsRepository extends CrudRepository<DbTest, UUID> {
     @Query("UPDATE tests SET className = ?1, moduleName = ?2 , jsonData = ?3 WHERE tokenId = ?0;")
     DbTestTree updateTest(UUID tokenId, String className, String moduleName, String jsonData);
 
-    @Query("UPDATE tests SET editLog =  editLog + [?1] WHERE tokenId = ?0;")
+    @Query("UPDATE tests SET editLog =  editLog + [?1] WHERE tokenId = ?0 IF EXISTS;")
     DbTestTree updateTestLog(UUID tokenId, String editLog);
 
     @Query("DELETE FROM tests WHERE tokenId = ?0")
