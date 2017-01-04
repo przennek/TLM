@@ -1,10 +1,5 @@
 package pl.edu.agh.cassandra.repositories
 
-/**
-  * Created by Kamil on 29.12.2016.
-  */
-import java.util.UUID
-
 import com.websudos.phantom.dsl._
 import pl.edu.agh.models.{DbTestTree}
 import scala.concurrent.Future

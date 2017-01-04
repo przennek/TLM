@@ -1,16 +1,9 @@
 package pl.edu.agh.cassandra.repositories
 
-/**
-  * Created by Kamil on 29.12.2016.
-  * */
 import java.util.UUID
-
 import com.websudos.phantom.dsl._
 import pl.edu.agh.models.DbTest
-
 import scala.concurrent.Future
-
-
 
 class TestModel extends CassandraTable[TestRepository, DbTest] {
 
@@ -21,7 +14,6 @@ class TestModel extends CassandraTable[TestRepository, DbTest] {
   object moduleName extends StringColumn(this)
   object editLog extends com.websudos.phantom.column.ListColumn[TestRepository, DbTest, String](this)
   object jsonData extends StringColumn(this)
-
 
   override def fromRow(r: Row): DbTest = DbTest(tokenId(r), className(r), moduleName(r), editLog(r), jsonData(r))
 }

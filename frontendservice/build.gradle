@@ -46,7 +46,6 @@ dependencyManagement {
     }
 }
 
-
 dependencies {
     compile("pl.edu.agh.devtoolkit:devtoolkit:0.0.1-SNAPSHOT") {
         exclude group: "org.springframework"

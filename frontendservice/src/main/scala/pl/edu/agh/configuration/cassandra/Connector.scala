@@ -1,16 +1,8 @@
 package pl.edu.agh.configuration.cassandra
 
-/**
-  * Created by Kamil on 28.12.2016.
-  * */
 import java.net.InetAddress
-
-import com.datastax.driver.core.{CodecRegistry, TypeCodec}
-import com.datastax.driver.extras.codecs.MappingCodec
 import com.typesafe.config.ConfigFactory
-import com.websudos.phantom.connectors.{ContactPoint, ContactPoints}
-import pl.edu.agh.models.{DbTest, DbTestLog}
-
+import com.websudos.phantom.connectors.{ContactPoints}
 import scala.collection.JavaConversions._
 
 object Connector {
@@ -24,8 +16,6 @@ object Connector {
       cassandraConfig.getString("cassandra.username"),
       cassandraConfig.getString("cassandra.password")
     )
-  ).keySpace(keyspace);
+  ).keySpace(keyspace)
 
-
-  lazy val cassandraConnector = ContactPoint.embedded.noHeartbeat().keySpace("tlm")
 }
