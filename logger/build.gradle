@@ -24,7 +24,7 @@ ext {
 
 jar {
     baseName = 'spring-boot-scala-web'
-    version =  '0.2.0'
+    version =  '1.0.0'
 }
 
 repositories {
@@ -41,7 +41,7 @@ dependencyManagement {
 }
 
 dependencies {
-    compile("pl.edu.agh.devtoolkit:devtoolkit:0.0.1-SNAPSHOT") {
+    compile("pl.edu.agh.devtoolkit:devtoolkit:1.0.0") {
         exclude group: "org.springframework"
     }
     compile("org.springframework.boot:spring-boot-starter-web")

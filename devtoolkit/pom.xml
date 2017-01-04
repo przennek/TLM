@@ -5,7 +5,7 @@
 
     <groupId>pl.edu.agh.devtoolkit</groupId>
     <artifactId>devtoolkit</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <build>
         <pluginManagement>
@@ -74,7 +74,7 @@
     <parent>
         <groupId>pl.edu.agh</groupId>
         <artifactId>TLM</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 

@@ -5,7 +5,7 @@
 
     <groupId>listener</groupId>
     <artifactId>listener</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <build>
         <plugins>
             <plugin>
@@ -22,7 +22,7 @@
     <parent>
         <groupId>pl.edu.agh</groupId>
         <artifactId>TLM</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -125,7 +125,7 @@
         <dependency>
             <groupId>pl.edu.agh.devtoolkit</groupId>
             <artifactId>devtoolkit</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
