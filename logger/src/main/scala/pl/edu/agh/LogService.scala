@@ -27,8 +27,8 @@ object LogService extends App {
 class LogService () {
   BasicConfigurator.configure()
   val log4jLevels: Array[String] = Array ("DEBUG", "ERROR", "FATAL", "INFO", "TRACE", "WARN")
-  val receiver: Receiver = new Receiver("localhost")
-  val sender: Sender = new Sender("localhost")
+  val receiver: Receiver = new Receiver("rabbitmq-service.default.svc.cluster.local")
+  val sender: Sender = new Sender("rabbitmq-service.default.svc.cluster.local")
 
   for (level <- log4jLevels) {
     receiver.register("log-exchange", x => LoggerUtil.appendLog(x), s"log.$level")

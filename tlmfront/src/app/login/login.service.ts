@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class LoginService {
+  private baseUrl: String  = "..";
   constructor(
     private http: Http,
     @Inject(CookieService) private cookieService: CookieService
@@ -23,7 +24,7 @@ export class LoginService {
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
     return this.http
-      .post('http://localhost:8080/auth/login',
+      .post(this.baseUrl+'/auth/login',
         body, {
           headers: headers,
           withCredentials: true
@@ -37,7 +38,7 @@ export class LoginService {
     headers.append('auth-token', token);
 
     return this.http
-      .post('http://localhost:8080/auth/login-success',
+      .post(this.baseUrl+'/auth/login-success',
         body, {
           headers: headers,
           withCredentials: true

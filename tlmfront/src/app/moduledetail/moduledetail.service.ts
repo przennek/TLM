@@ -5,9 +5,10 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ModuledetailService {
+  private baseUrl: String  = "..";
   constructor(
     private http: Http,
-  @Inject(CookieService) private cookieService: CookieService
+    @Inject(CookieService) private cookieService: CookieService
   ) {
     this.http = http;
   }
@@ -18,7 +19,7 @@ export class ModuledetailService {
       headers.append('Content-Type', 'application/x-www-form-urlencoded');
       headers.append('auth-token', this.cookieService.get("auth-token"));
       return this.http
-        .post('http://localhost:8080/frontendservice/getTestTree',
+        .post(this.baseUrl+'/frontendservice/getTestTree',
           body, {
             headers: headers
           });

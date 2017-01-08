@@ -28,8 +28,8 @@ object FrontEndService extends App {
   private val logger: TLMLogger = TLMLogger.getLogger(classOf[FrontEndService].getName)
   BasicConfigurator.configure()
   logger.info("Test register service is running.", null)
-  val receiver: Receiver = new Receiver("localhost")
-  val sender: Sender = new Sender("localhost")
+  val receiver: Receiver = new Receiver("rabbitmq-service.default.svc.cluster.local")
+  val sender: Sender = new Sender("rabbitmq-service.default.svc.cluster.local")
   var addId: Consumer[String] = new Consumer[String] {
     override def accept(t: String): Unit = SessionManager.addId(t)
   }

@@ -23,3 +23,4 @@ public class AuthConfigTest extends AbstractTestNGSpringContextTests {
     }
 }
 
+

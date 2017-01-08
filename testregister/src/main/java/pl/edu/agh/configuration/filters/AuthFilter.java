@@ -33,7 +33,11 @@ public class AuthFilter implements Filter {
         Map<String, String> headers = new HashMap<>();
         Arrays.stream(cookie.split(";")).forEach(el -> {
             String[] t = el.contains("=") ? el.split("=") : el.split(":");
-            headers.put(t[0].trim(), t[1].trim());
+            if (t.length == 2) {
+                headers.put(t[0].trim(), t[1].trim());
+            } else  {
+                headers.put("auth-token", "");
+            }
          });
         String sessionId = headers.get("auth-token");
         User user = SessionManager.sessionIds.get(sessionId);

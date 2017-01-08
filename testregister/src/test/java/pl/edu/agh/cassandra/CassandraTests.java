@@ -26,7 +26,7 @@ import static pl.edu.agh.annotated.annotations.TestTypes.IntegrationTest;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
 @TestType(IntegrationTest)
-@Description("MongoDB has to be up and running for these to pass!")
+@Description("Casssandra tests")
 public class CassandraTests extends AbstractTestNGSpringContextTests {
 
     @Autowired

@@ -14,7 +14,7 @@ import java.nio.file.Path;
  * Created by Przemek on 27.10.2016.
  */
 public class FileMarker extends PriorityAwareListener {
-    private static TLMLogger log = TLMLogger.getLogger(FileMarker.class.getName());
+    //private static TLMLogger log = TLMLogger.getLogger(FileMarker.class.getName());
 
     public FileMarker() {
         super(101);

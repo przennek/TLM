@@ -29,7 +29,7 @@ object LoggerUtil {
   }
 
   def logInElastic(className: String, level: String, message: String, date: String): Unit = {
-    val restClient = RestClient.builder(new HttpHost("localhost", 9200, "http")).build()
+    val restClient = RestClient.builder(new HttpHost("elasticsearch-log.default.svc.cluster.local", 9200, "http")).build()
     var entryMap: Map[String, String] = Map()
     entryMap = entryMap + ("date" -> date) + ("level" -> level) + ("className" -> className) + ("message" -> message)
 //    println(Json.toJson(entryMap))

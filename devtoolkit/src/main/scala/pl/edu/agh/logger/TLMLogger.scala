@@ -40,7 +40,7 @@ class TLMLogger (val tyPe: String, val sender: Sender, val exchange_name: String
 }
 
 object TLMLogger {
-  val sender: Sender = new Sender("localhost")
+  val sender: Sender = new Sender("rabbitmq-service.default.svc.cluster.local")
   def getLogger(c: String): TLMLogger = {
     new TLMLogger(c, sender, "log-exchange")
   }

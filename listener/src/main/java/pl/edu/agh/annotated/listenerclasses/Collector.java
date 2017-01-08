@@ -37,7 +37,7 @@ import static pl.edu.agh.util.TestClassDataExtractor.extractData;
  * Created by Przemek on 16.10.2016.
  */
 public class Collector extends PriorityAwareListener {
-    private static TLMLogger log = TLMLogger.getLogger(Collector.class.getName());
+    //private static TLMLogger log = TLMLogger.getLogger(Collector.class.getName());
 
     public Collector() {
         super(99);
@@ -54,14 +54,14 @@ public class Collector extends PriorityAwareListener {
         try {
             path = FileHelper.get().preparePath(iInvokedMethod.getTestMethod());
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+           // log.error(e.getMessage(), e);
         }
         if (ListenerHelper.hasAnnotation(iInvokedMethod, TestType.class)) {
             if (iTestResult.isSuccess()) {
                 try {
                     String token = FileHelper.get().getToken(path);
                     if ("".equals(token)) {
-                        log.error("Error while reading token from test file, does your OS support TLM?", null);
+                        //log.error("Error while reading token from test file, does your OS support TLM?", null);
                         throw new TokenCouldNotBeParsedException();
                     }
                     String moduleName  =  FileHelper.get().getTlmProperties().getProperty("moduleName");
@@ -74,21 +74,21 @@ public class Collector extends PriorityAwareListener {
                     try {
                         extractData(testClass, iInvokedMethod, path);
                     } catch (TestClassDataParseException e) {
-                        log.error("Critical error during parsing test data from file: " + path.toString(), e);
+                       // log.error("Critical error during parsing test data from file: " + path.toString(), e);
                         FileHelper.get().deleteMark(path);
                     }
 
                     if (!isTestInDB(testClass)) {
                         // register test
                         if (!register(testClass)) {
-                            log.error("Failed to register token: " + token + ", on file: " + path.toString(), null);
+                            //log.error("Failed to register token: " + token + ", on file: " + path.toString(), null);
                             FileHelper.get().deleteMark(path);
                         }
                     }
                 } catch (TokenCouldNotBeParsedException ignored) {
                     // consume
                 } catch (IOException e) {
-                    log.error("Configuration provided is incorrect. TLM won't work as expected.", e);
+                   // log.error("Configuration provided is incorrect. TLM won't work as expected.", e);
                 }
             } else {
                 FileHelper.get().deleteMark(path);
@@ -115,7 +115,7 @@ public class Collector extends PriorityAwareListener {
 
             return (Boolean) new ObjectMapper().readValue(json, HashMap.class).get("added");
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            //log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -137,7 +137,7 @@ public class Collector extends PriorityAwareListener {
 
             return (Boolean) new ObjectMapper().readValue(json, HashMap.class).get("isInDB");
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            //log.error(e.getMessage(), e);
         }
         return false;
     }

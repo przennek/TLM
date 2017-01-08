@@ -30,7 +30,7 @@ import java.util.List;
  * Created by Przemek on 18.12.2016.
  */
 public class TreeBuilder extends PriorityAwareListener {
-    private static TLMLogger log = TLMLogger.getLogger(TreeBuilder.class.getName());
+    //private static TLMLogger log = TLMLogger.getLogger(TreeBuilder.class.getName());
 
     public TreeBuilder() {
         super(98);
@@ -50,7 +50,7 @@ public class TreeBuilder extends PriorityAwareListener {
                 registerTree(moduleName, json);
             }
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            //log.error(e.getMessage(), e);
         }
     }
 
@@ -98,7 +98,7 @@ public class TreeBuilder extends PriorityAwareListener {
 
             return (Boolean) new ObjectMapper().readValue(json, HashMap.class).get("added");
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+           // log.error(e.getMessage(), e);
             return false;
         }
     }

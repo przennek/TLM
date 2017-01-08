@@ -16,4 +16,3 @@ public class FileMarkerTest {
     }
 }
 
-// tlm-token: 9883bae5-ae79-4670-93c4-b0cd9db1700e

@@ -12,16 +12,16 @@ import pl.edu.agh.messaging.Sender;
 @Component
 public class MessagingBeans {
     @Bean
-    @Qualifier("localhost")
+    @Qualifier("rabbitmq-service.default.svc.cluster.local")
     public Sender sender() {
 //        return new Sender("rabbitmq-service.default.svc.cluster.local");
-        return new Sender("localhost");
+        return new Sender("rabbitmq-service.default.svc.cluster.local");
     }
 
     @Bean
-    @Qualifier("localhost")
+    @Qualifier("rabbitmq-service.default.svc.cluster.local")
     public Receiver receiver() {
 //        return new Receiver("rabbitmq-service.default.svc.cluster.local");
-        return new Receiver("localhost");
+        return new Receiver("rabbitmq-service.default.svc.cluster.local");
     }
 }

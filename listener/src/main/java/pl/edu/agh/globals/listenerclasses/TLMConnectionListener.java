@@ -34,7 +34,7 @@ public class TLMConnectionListener extends GlobalListener {
     public static String sessionId;
     public static String jSessionId;
 
-    private static TLMLogger log = TLMLogger.getLogger(TLMConnectionListener.class.getName());
+    //private static TLMLogger log = TLMLogger.getLogger(TLMConnectionListener.class.getName());
 
     public TLMConnectionListener() {
         super(98);
@@ -46,7 +46,7 @@ public class TLMConnectionListener extends GlobalListener {
             getSessionId();
             globalAuthorisation();
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            //log.error(e.getMessage(), e);
         }
     }
 

@@ -25,7 +25,8 @@ class AuthFilter extends Filter {
 
     for(el <- cookie.split(";")) {
       val t: Array[String] = if (el.contains("=")) el.split("=") else el.split(":")
-      headers.put(t(0).toString.trim, t(1).toString.trim)
+      if(t.length == 2)  headers.put(t(0).toString.trim, t(1).toString.trim)
+      else  headers.put("auth-token", "")
     }
 
     val sessionId: String = headers.get("auth-token")

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class DashboardService {
+  private baseUrl: String  = "..";
   constructor(
     private http: Http,
   @Inject(CookieService) private cookieService: CookieService
@@ -18,7 +19,7 @@ export class DashboardService {
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     headers.append('auth-token', this.cookieService.get("auth-token"));
     return this.http
-      .post('http://localhost:8080/frontendservice/getAllTestTrees',
+      .post(this.baseUrl+'/frontendservice/getAllTestTrees',
         body, {
           headers: headers
         });

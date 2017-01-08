@@ -15,5 +15,3 @@ public class TLMConnectionListenerTest {
 
     }
 }
-
-// tlm-token: 863fce4e-47c7-42ef-82d0-f02393e62adf

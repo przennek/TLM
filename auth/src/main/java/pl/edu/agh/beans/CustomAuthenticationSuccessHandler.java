@@ -32,14 +32,21 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Map<String, String> headers = new HashMap<>();
         Arrays.stream(cookie.split(";")).forEach(el -> {
             String[] t = el.contains("=") ? el.split("=") : el.split(":");
-            headers.put(t[0].trim(), t[1].trim());
+            if (t.length == 2) {
+                headers.put(t[0].trim(), t[1].trim());
+            } else  {
+                headers.put("auth-token", "");
+            }
         });
         String sessionId = headers.get("auth-token");
         User user = SessionManager.sessionIds.get(sessionId);
+        String authToken;
         if(user != null) {
-            return;
+            authToken = sessionId;
+        } else {
+            authToken = Utils.generateAuthToken();
         }
-        Cookie newCookie = new Cookie("auth-token", Utils.generateAuthToken());
+        Cookie newCookie = new Cookie("auth-token", authToken);
         newCookie.setPath("/");
         httpServletResponse.addCookie(newCookie);
         if(httpServletRequest.getParameter("ref") != null) {

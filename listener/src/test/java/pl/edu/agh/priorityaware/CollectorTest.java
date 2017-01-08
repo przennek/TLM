@@ -16,4 +16,3 @@ public class CollectorTest {
     }
 }
 
-// tlm-token: 195b368a-75ba-4f5f-8a46-d262a161ce9e

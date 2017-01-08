@@ -20,7 +20,7 @@ class LogController() {
     try {
       (
         Json.parse(
-          Http(s"http://localhost:9200/log/$level/_search?pretty&filter_path=hits.hits._source.*")
+          Http(s"http://elasticsearch-log.default.svc.cluster.local:9200/log/$level/_search?pretty&filter_path=hits.hits._source.*")
             .header("Content-Type", "application/json")
             .header("Charset", "UTF-8")
             .option(HttpOptions.readTimeout(TIMEOUT))
@@ -38,7 +38,7 @@ class LogController() {
     try {
       (
         Json.parse(
-          Http(s"http://localhost:9200/log/_search?pretty&filter_path=hits.hits._source.*")
+          Http(s"http://elasticsearch-log.default.svc.cluster.local:9200/log/_search?pretty&filter_path=hits.hits._source.*")
             .postData(s"""{"query" : {"match" : { "message" : "$msg" }}}""")
             .header("Content-Type", "application/json")
             .header("Charset", "UTF-8")

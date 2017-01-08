@@ -29,7 +29,7 @@ import java.util.List;
  * Created by Przemek on 23.12.2016.
  */
 public class TestExecution extends PriorityAwareListener {
-    private static TLMLogger log = TLMLogger.getLogger(TestExecution.class.getName());
+    //private static TLMLogger log = TLMLogger.getLogger(TestExecution.class.getName());
 
     public TestExecution() {
         super(98);
@@ -48,14 +48,14 @@ public class TestExecution extends PriorityAwareListener {
             if (!"".equals(token)) {
                 if (FileHelper.isTokenUsed(token)) {
                     if (!logExecution(token, iTestResult.isSuccess())) {
-                        log.error("Something went terribly wrong and TLM is unable to log timestamp of this test execution.", null);
+                        //log.error("Something went terribly wrong and TLM is unable to log timestamp of this test execution.", null);
                     }
                 }
             }
         } catch (TokenCouldNotBeParsedException ignored) {
             // consume
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+           // log.error(e.getMessage(), e);
         }
     }
 
@@ -78,7 +78,7 @@ public class TestExecution extends PriorityAwareListener {
 
             return (Boolean) new ObjectMapper().readValue(json, HashMap.class).get("added");
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+           // log.error(e.getMessage(), e);
         }
         return false;
     }

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class TestDetailService {
+  private baseUrl: String  = "..";
   constructor(
     private http: Http,
     @Inject(CookieService) private cookieService: CookieService
@@ -20,7 +21,7 @@ export class TestDetailService {
       headers.append('auth-token', this.cookieService.get("auth-token"));
 
       return this.http
-        .post('http://localhost:8080/frontendservice/getTest',
+        .post(this.baseUrl+'/frontendservice/getTest',
           body, {
             headers: headers,
             withCredentials: true

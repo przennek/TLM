@@ -1,7 +1,6 @@
 package pl.edu.agh.messaging;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 import pl.edu.agh.TestRegisterService;
@@ -10,7 +9,7 @@ import pl.edu.agh.TestRegisterService;
  * Created by Przemek on 19.11.2016.
  */
 // TODO find alternative for this annotation (for TestNG) in Spring in action as stackoverflow is useless for this case
-@SpringApplicationConfiguration(classes = TestRegisterService.class)
+//@SpringApplicationConfiguration(classes = TestRegisterService.class)
 public class PopulateMessageTest extends AbstractTestNGSpringContextTests {
     @Autowired
     Sender sender;

@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * Created by Przemek on 24.10.2016.
  */
 public class FileHelper {
-    private static TLMLogger log = TLMLogger.getLogger(FileHelper.class.getName());
+    //private static TLMLogger log = TLMLogger.getLogger(FileHelper.class.getName());
     private static FileHelper instance;
     private static final String TLM_TOKEN = "tlm-token";
     private URL PROPERTIES_PATH;
@@ -50,7 +50,7 @@ public class FileHelper {
                 throw new TLMPropertiesNotFoundException(message);
             }
         } catch (MalformedURLException e) {
-            log.error(e.getMessage(), e);
+           // log.error(e.getMessage(), e);
         }
     }
 
@@ -65,7 +65,7 @@ public class FileHelper {
         try {
             Files.write(path, ("\n// " + TLM_TOKEN + ": " + uniqueToken).getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
-            log.error("Error while setting token on file.", e);
+            //log.error("Error while setting token on file.", e);
         }
         return uniqueToken;
     }
@@ -77,7 +77,7 @@ public class FileHelper {
             List<String> updatedLines = lines.stream().filter(s -> !s.contains(("// " + TLM_TOKEN + ": "))).collect(Collectors.toList());
             FileUtils.writeLines(file, updatedLines, false);
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            //log.error(e.getMessage(), e);
         }
     }
 
@@ -99,8 +99,8 @@ public class FileHelper {
         try {
             properties.load(new FileInputStream(PROPERTIES_PATH.toString().replaceAll("file:/", "/")));
         } catch (IOException e) {
-            log.error("Error while reading properties file, check your TLM configuration!", null);
-            log.error(e.getMessage(), e);
+            //log.error("Error while reading properties file, check your TLM configuration!", null);
+            //log.error(e.getMessage(), e);
             throw e;
         }
         return properties;
@@ -110,7 +110,7 @@ public class FileHelper {
         final String[] readToken = new String[1];
 
         if (!Files.exists(path)) {
-            log.error("Error while reading test file on path: " + path.toString(), null);
+            //log.error("Error while reading test file on path: " + path.toString(), null);
             throw new TokenCouldNotBeParsedException();
         }
 
@@ -129,7 +129,7 @@ public class FileHelper {
 
             return readToken[0].replaceAll("//", "").replaceAll(TLM_TOKEN + ":", "").trim();
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            //log.error(e.getMessage(), e);
             throw new TokenCouldNotBeParsedException();
         }
     }
@@ -149,7 +149,7 @@ public class FileHelper {
 
             return (Boolean) new ObjectMapper().readValue(json, HashMap.class).get("isInDB");
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            //log.error(e.getMessage(), e);
         }
         return false;
     }

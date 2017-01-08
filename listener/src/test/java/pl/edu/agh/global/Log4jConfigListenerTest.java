@@ -15,5 +15,3 @@ public class Log4jConfigListenerTest {
 
     }
 }
-
-// tlm-token: bfff37d2-db9d-47c3-bd62-eabcff61eb17
