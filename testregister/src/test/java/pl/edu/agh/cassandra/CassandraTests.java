@@ -65,6 +65,4 @@ public class CassandraTests extends AbstractTestNGSpringContextTests {
         testsTreeRepository.updateTree("testModule2", "{a:'a'}");
         List<DbTestTree> testTrees = testsTreeRepository.findAllTrees();
     }
-
-
 }
